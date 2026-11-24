@@ -34,11 +34,14 @@ jobs:
       - name: Enforce 300-line cap
         run: pnpm check:lines
 
-      - name: Lint
-        run: pnpm lint
-
       - name: Generate Prisma client
         run: pnpm --filter @dijios-connect/api db:generate
+
+      - name: Build workspace packages
+        run: pnpm --filter "./packages/*" build
+
+      - name: Lint
+        run: pnpm lint
 
       - name: Typecheck
         run: pnpm typecheck
