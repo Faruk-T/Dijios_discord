@@ -19,17 +19,20 @@ async function login(app: NestFastifyApplication, dijiosUserId: string): Promise
   return typeof body.accessToken === "string" ? body.accessToken : "";
 }
 
-function claim(token: string, key: string): boolean {
+function claim(token: string, key: "canPublish" | "roomAdmin"): boolean {
   const part = token.split(".")[1];
   if (part === undefined) {
     return false;
   }
   const json: unknown = JSON.parse(Buffer.from(part, "base64url").toString("utf8"));
-  if (typeof json !== "object" || json === null || !("video" in json)) {
+  if (typeof json !== "object" || json === null || !("video" in json) || !isVideo(json.video)) {
     return false;
   }
-  const video = json.video;
-  return typeof video === "object" && video !== null && key in video && video[key] === true;
+  return json.video[key] === true;
+}
+
+function isVideo(value: unknown): value is { canPublish?: boolean; roomAdmin?: boolean } {
+  return typeof value === "object" && value !== null;
 }
 
 describe("livekit voice tokens", () => {
