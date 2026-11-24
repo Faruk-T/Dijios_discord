@@ -4,7 +4,7 @@ const HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
 
 export interface InstitutionSeedSurface {
   lang: string;
-  dataset: Record<string, string>;
+  dataset: { [key: string]: string | undefined };
   style: { setProperty(name: string, value: string): void };
 }
 

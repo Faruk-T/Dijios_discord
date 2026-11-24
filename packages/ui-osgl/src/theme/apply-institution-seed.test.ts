@@ -4,7 +4,7 @@ import { DIJIOS_OXFORD_SEED } from "./dijios-theme.tokens.js";
 
 function surface(): {
   lang: string;
-  dataset: Record<string, string>;
+  dataset: Record<string, string | undefined>;
   style: { setProperty(name: string, value: string): void };
   values: Map<string, string>;
 } {
