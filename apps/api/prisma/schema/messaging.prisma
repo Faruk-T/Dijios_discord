@@ -1,0 +1,40 @@
+model Message {
+  id              String              @id @db.Uuid
+  publicId        String              @unique
+  institutionId   String              @db.Uuid
+  channelId       String              @db.Uuid
+  authorId        String              @db.Uuid
+  parentMessageId String?             @db.Uuid
+  content         String
+  isPinned        Boolean             @default(false)
+  embedPayload    Json?
+  editedAt        DateTime?
+  deletedAt       DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  attachments     MessageAttachment[]
+  reactions       MessageReaction[]
+
+  @@index([channelId, id])
+}
+
+model MessageAttachment {
+  id            String  @id @db.Uuid
+  messageId     String  @db.Uuid
+  institutionId String  @db.Uuid
+  fileName      String
+  mimeType      String
+  sizeBytes     Int
+  objectKey     String
+  message       Message @relation(fields: [messageId], references: [id])
+}
+
+model MessageReaction {
+  id        String  @id @db.Uuid
+  messageId String  @db.Uuid
+  userId    String  @db.Uuid
+  emoji     String
+  message   Message @relation(fields: [messageId], references: [id])
+
+  @@unique([messageId, userId, emoji])
+}
