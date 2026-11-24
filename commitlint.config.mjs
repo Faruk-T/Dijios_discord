@@ -1,6 +1,22 @@
+const conventionalTypes = [
+  "build",
+  "chore",
+  "ci",
+  "docs",
+  "feat",
+  "fix",
+  "perf",
+  "refactor",
+  "revert",
+  "style",
+  "test",
+  "arch",
+];
+
 export default {
   extends: ["@commitlint/config-conventional"],
   rules: {
     "header-max-length": [2, "always", 72],
+    "type-enum": [2, "always", conventionalTypes],
   },
 };
