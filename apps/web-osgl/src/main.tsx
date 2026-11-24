@@ -11,6 +11,7 @@ import "./styles/osgl-windows.css";
 import "./styles/communication-hub.css";
 import "./styles/messaging-pane.css";
 import "./styles/voice-stage.css";
+import "./styles/academic-tools.css";
 
 const root = document.getElementById("root");
 if (root === null) {

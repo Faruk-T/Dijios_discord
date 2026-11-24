@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { MeetingMinutesWindow } from "../features/academic-tools/MeetingMinutesWindow.js";
 import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
 import { MediaStudioWindow } from "../features/settings-studio/MediaStudioWindow.js";
 import { VoiceStageWindow } from "../features/voice-video/VoiceStageWindow.js";
@@ -32,6 +33,16 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     minSize: { width: 360, height: 240 },
     fullBleed: false,
     render: VoiceStageWindow,
+  },
+  {
+    appId: "meeting-minutes",
+    title: "Zümre Tutanağı",
+    category: "Akademik",
+    icon: "description",
+    defaultSize: { width: 760, height: 540 },
+    minSize: { width: 360, height: 240 },
+    fullBleed: false,
+    render: MeetingMinutesWindow,
   },
   {
     appId: "department-files",

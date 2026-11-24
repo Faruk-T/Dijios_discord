@@ -1,0 +1,101 @@
+.minutes-window,
+.student-window {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.minutes-window textarea,
+.student-window input,
+.minutes-decisions input,
+.minutes-decisions select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  min-height: 44px;
+}
+
+.minutes-window textarea {
+  min-height: 96px;
+}
+
+.minutes-window pre,
+.student-note {
+  white-space: pre-wrap;
+  background: #f4f7fb;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.academic-fill {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.academic-ribbon {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #002147;
+  color: #ffffff;
+}
+
+.academic-engine {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.sheet-embed,
+.poll-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #132a4a;
+  color: #ffffff;
+}
+
+.poll-card button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.poll-bar {
+  display: block;
+  height: 8px;
+  margin-top: 4px;
+  border-radius: 8px;
+  background: #457b9d;
+}
+
+.campus-alert,
+.campus-alert-slot {
+  position: relative;
+  z-index: 1800;
+  margin: 8px 16px 0;
+}
+
+.campus-alert {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #1d3557;
+  color: #ffffff;
+}
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}

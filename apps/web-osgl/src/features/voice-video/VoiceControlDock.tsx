@@ -41,6 +41,9 @@ export function VoiceControlDock(): JSX.Element {
       <button type="button" aria-label="Cihaz Stüdyosu" onClick={() => openStudio("media-studio")}>
         <GoogleIcon name="tune" />
       </button>
+      <button type="button" onClick={() => openStudio("meeting-minutes")}>
+        📝 Tutanak
+      </button>
       <button className="is-leave" type="button" aria-label="Ayrıl" onClick={() => void leave()}>
         Ayrıl
       </button>
