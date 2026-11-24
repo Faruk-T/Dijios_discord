@@ -127,8 +127,8 @@
   flex-direction: column;
   gap: 14px;
   padding: 28px 26px;
-  background: var(--uxu-bg-elevated, #f4f7fb);
-  color: var(--uxu-text-primary, #0b1d36);
+  background: #f4f7fb;
+  color: #0b1d36;
 }
 
 .login-school {
@@ -196,6 +196,7 @@
   align-items: center;
   min-height: 58px;
   padding: 8px;
+  color: #0b1d36;
   text-align: left;
   background: #fff;
   border: 1px solid rgba(0, 33, 71, 0.08);
