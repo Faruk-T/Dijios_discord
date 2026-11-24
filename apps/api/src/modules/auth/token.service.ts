@@ -16,6 +16,7 @@ const claimsSchema = z.object({
   institutionId: z.string().min(1),
   systemRole: z.enum(["FOUNDER", "PRINCIPAL", "DEPT_HEAD", "TEACHER", "COUNSELOR"]),
   branchName: z.string().min(1),
+  tokenUse: z.enum(["access", "refresh"]),
   exp: z.number().int(),
 });
 
@@ -66,12 +67,12 @@ export class TokenService {
     };
     return {
       refreshToken: sign(
-        JSON.stringify({ ...claims, exp: now + REFRESH_TTL_SECONDS }),
+        JSON.stringify({ ...claims, tokenUse: "refresh", exp: now + REFRESH_TTL_SECONDS }),
         this.env.config.JWT_REFRESH_SECRET,
       ),
       response: {
         accessToken: sign(
-          JSON.stringify({ ...claims, exp: now + ACCESS_TTL_SECONDS }),
+          JSON.stringify({ ...claims, tokenUse: "access", exp: now + ACCESS_TTL_SECONDS }),
           this.env.config.JWT_ACCESS_SECRET,
         ),
         tokenType: "Bearer",
@@ -98,11 +99,11 @@ export class TokenService {
   }
 
   verifyAccess(token: string): VerifiedClaims {
-    return this.verify(token, this.env.config.JWT_ACCESS_SECRET);
+    return this.verify(token, this.env.config.JWT_ACCESS_SECRET, "access");
   }
 
   verifyRefresh(token: string): VerifiedClaims {
-    return this.verify(token, this.env.config.JWT_REFRESH_SECRET);
+    return this.verify(token, this.env.config.JWT_REFRESH_SECRET, "refresh");
   }
 
   refreshCookieOptions(): RefreshCookieOptions {
@@ -114,7 +115,7 @@ export class TokenService {
     };
   }
 
-  private verify(token: string, secret: string): VerifiedClaims {
+  private verify(token: string, secret: string, tokenUse: "access" | "refresh"): VerifiedClaims {
     const [header, payload, signature] = token.split(".");
     if (header === undefined || payload === undefined || signature === undefined) {
       throw new UnauthorizedDomainException("Token is malformed.");
@@ -130,6 +131,9 @@ export class TokenService {
     );
     if (!parsed.success || parsed.data.exp * 1000 <= Date.now()) {
       throw new UnauthorizedDomainException("Token is expired or invalid.");
+    }
+    if (parsed.data.tokenUse !== tokenUse) {
+      throw new UnauthorizedDomainException("Token use is not accepted.");
     }
     return parsed.data;
   }

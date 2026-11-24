@@ -44,5 +44,21 @@ describe("auth http", () => {
     expect(String(cookie).toLowerCase()).toContain("samesite=lax");
     expect(refresh.statusCode).toBe(201);
     expect(logout.json()).toEqual({ status: "ok" });
+
+    const loginBody: unknown = login.json();
+    const accessToken =
+      typeof loginBody === "object" &&
+      loginBody !== null &&
+      "accessToken" in loginBody &&
+      typeof loginBody.accessToken === "string"
+        ? loginBody.accessToken
+        : "";
+    const swapped = await app.inject({
+      method: "POST",
+      url: "/api/v1/auth/refresh",
+      headers: { cookie: `dijios_refresh=${accessToken}` },
+    });
+    expect(swapped.statusCode).toBe(401);
+    expect(swapped.json()).toMatchObject({ code: "UNAUTHORIZED" });
   });
 });
