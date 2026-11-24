@@ -17,6 +17,7 @@ import {
   SCHOOL_DIRECTORY_PORT,
   type SchoolDirectoryPort,
 } from "../directory/school-directory.port.js";
+import { PresenceService } from "../realtime/presence.service.js";
 import { RbacEvaluatorService } from "../rbac/rbac-evaluator.service.js";
 import { DepartmentProvisionerService } from "./department-provisioner.service.js";
 import type { StoredChannel, StoredWorkspace } from "./workspace-store.port.js";
@@ -30,6 +31,7 @@ export class WorkspacesService {
     private readonly provisioner: DepartmentProvisionerService,
     @Inject(RbacEvaluatorService) private readonly rbac: RbacEvaluatorService,
     @Inject(SCHOOL_DIRECTORY_PORT) private readonly directory: SchoolDirectoryPort,
+    @Inject(PresenceService) private readonly presence: PresenceService,
   ) {}
 
   tree(auth: AuthContext): WorkspaceTreeResponse {
@@ -108,7 +110,8 @@ export class WorkspacesService {
     if (!decision.ok) {
       return [];
     }
-    return [toChannel(channel, decision.permissions.flags)];
+    this.presence.attachChannel(channel.slug, channel.id);
+    return [toChannel(channel, decision.permissions.flags, this.presence.occupants(channel.slug))];
   }
 }
 
@@ -126,6 +129,7 @@ function mayCreate(
 function toChannel(
   channel: StoredChannel,
   permissions: ChannelPermissionFlags,
+  occupants: ChannelWithOccupants["occupants"],
 ): ChannelWithOccupants {
   return {
     id: parseUuidV7(channel.id),
@@ -142,6 +146,6 @@ function toChannel(
     maxParticipants: channel.maxParticipants,
     position: channel.position,
     permissions,
-    occupants: [],
+    occupants,
   };
 }

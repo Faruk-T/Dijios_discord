@@ -35,6 +35,10 @@ export class MemorySchoolDirectory implements SchoolDirectoryPort {
     return this.teachers.get(userId) ?? null;
   }
 
+  listTeachers(institutionId: string): readonly DirectoryTeacher[] {
+    return [...this.teachers.values()].filter((teacher) => teacher.institutionId === institutionId);
+  }
+
   findInstitutionById(institutionId: string): DirectoryInstitution | null {
     return this.institutions.get(institutionId) ?? null;
   }

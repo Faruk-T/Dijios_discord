@@ -24,6 +24,7 @@ export interface DirectoryInstitution {
 
 export interface SchoolDirectoryPort {
   findTeacherById(userId: string): DirectoryTeacher | null;
+  listTeachers(institutionId: string): readonly DirectoryTeacher[];
   findInstitutionById(institutionId: string): DirectoryInstitution | null;
   upsertAuthenticatedTeacher(teacher: AuthenticatedTeacher): void;
 }
