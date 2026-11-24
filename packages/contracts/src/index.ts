@@ -43,11 +43,16 @@ export {
 export {
   MESSAGE_EMBED_KINDS,
   type AttachmentMetadata,
+  type ChannelUnreadSummary,
+  type CreateMessageRequestDto,
   type MessageEmbedKind,
   type MessageEmbedPayload,
   type MessageReactionSummary,
+  type MessageSearchHit,
   type MessageSummary,
   type ThreadSummary,
+  type ToggleReactionRequestDto,
+  type UpdateMessageRequestDto,
 } from "./messaging.contracts.js";
 
 export type {

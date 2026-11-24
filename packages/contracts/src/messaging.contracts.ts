@@ -42,6 +42,34 @@ export interface MessageSummary {
   readonly attachments: readonly AttachmentMetadata[];
   readonly reactions: readonly MessageReactionSummary[];
   readonly embed: MessageEmbedPayload | null;
+  readonly isPinned: boolean;
+  readonly replyCount: number;
+}
+
+export interface CreateMessageRequestDto {
+  readonly content: string;
+  readonly parentMessageId?: UuidV7;
+}
+
+export interface UpdateMessageRequestDto {
+  readonly content: string;
+}
+
+export interface ToggleReactionRequestDto {
+  readonly emoji: string;
+}
+
+export interface ChannelUnreadSummary {
+  readonly channelId: UuidV7;
+  readonly unreadCount: number;
+  readonly mentionCount: number;
+}
+
+export interface MessageSearchHit {
+  readonly channelId: UuidV7;
+  readonly channelName: string;
+  readonly messageId: UuidV7;
+  readonly excerpt: string;
 }
 
 export interface ThreadSummary {
