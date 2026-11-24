@@ -1,0 +1,15 @@
+{
+  "name": "@dijios-connect/web-osgl",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

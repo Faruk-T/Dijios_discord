@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    typescript:
+      specifier: 5.7.3
+      version: 5.7.3
+
 importers:
 
   .:
@@ -13,6 +19,38 @@ importers:
         version: 2.5.6
       typescript:
         specifier: 5.7.3
+        version: 5.7.3
+
+  apps/api:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.3
+
+  apps/landing-geo:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.3
+
+  apps/web-osgl:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.3
+
+  packages/config: {}
+
+  packages/contracts:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.3
+
+  packages/ui-osgl:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
         version: 5.7.3
 
 packages:
