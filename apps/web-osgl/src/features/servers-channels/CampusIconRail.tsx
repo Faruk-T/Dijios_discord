@@ -15,6 +15,7 @@ const FILTERS: readonly {
   { id: "branch", icon: "school", label: "Zümrem" },
   { id: "voice", icon: "volume_up", label: "Sesli Odalar" },
   { id: "announcements", icon: "campaign", label: "Duyurular" },
+  { id: "dm", icon: "chat", label: "Özel Mesajlar" },
 ];
 
 export function CampusIconRail(): JSX.Element {
