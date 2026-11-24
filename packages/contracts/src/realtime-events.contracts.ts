@@ -1,3 +1,4 @@
+import type { CampusBroadcastAlert } from "./academic-bridge.contracts.js";
 import type { MessageSummary } from "./messaging.contracts.js";
 import type { IsoTimestamp, Ulid, UuidV7 } from "./primitives.contracts.js";
 import type { PresenceStatus } from "./tenant-auth.contracts.js";
@@ -76,4 +77,5 @@ export interface ServerToClientEvents {
   "chat:typing": (payload: TypingBroadcastPayload) => void;
   "presence:updated": (payload: PresenceUpdatedPayload) => void;
   "voice:room_state_updated": (payload: VoiceRoomStatePayload) => void;
+  "campus:broadcast": (alert: CampusBroadcastAlert) => void;
 }

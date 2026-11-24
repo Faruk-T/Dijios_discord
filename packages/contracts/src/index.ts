@@ -69,6 +69,13 @@ export type {
 } from "./meeting-minutes.contracts.js";
 
 export type {
+  CampusBroadcastAlert,
+  QuickPollOption,
+  QuickPollPayload,
+  Student360Summary,
+} from "./academic-bridge.contracts.js";
+
+export type {
   ChatMessageSendPayload,
   ClientToServerEvents,
   HandRaisePayload,
