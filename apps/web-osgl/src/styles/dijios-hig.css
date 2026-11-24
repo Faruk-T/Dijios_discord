@@ -1,0 +1,48 @@
+:root {
+  --djs-oxford-navy: #002147;
+  --djs-prussian-navy: #1d3557;
+  --djs-steel-cerulean: #457b9d;
+  --djs-primary: #002147;
+}
+
+body {
+  background: var(--djs-oxford-navy);
+  color: var(--uxu-text-primary, #f8fafc);
+}
+
+.osgl-desktop,
+.osgl-mobile {
+  min-height: 100vh;
+}
+
+.osgl-liquid {
+  background: var(--uxu-liquid-regular-bg, rgba(0, 33, 71, 0.72));
+  backdrop-filter: blur(32px) saturate(180%);
+}
+
+.osgl-content-surface {
+  background: var(--uxu-bg-elevated, #0b1d36);
+  color: inherit;
+}
+
+html[data-reduced-motion="true"] .osgl-liquid,
+html[data-webgl="false"] .osgl-liquid {
+  background: var(--uxu-bg-elevated, #10243f);
+  backdrop-filter: none;
+}
+
+.osgl-hit {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--djs-steel-cerulean);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .osgl-liquid {
+    backdrop-filter: none;
+  }
+}
