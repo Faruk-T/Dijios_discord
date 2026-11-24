@@ -9,14 +9,17 @@ import { useShellPreferences, watchReducedMotion } from "./shell-preferences.sto
 function MenuButton({
   id,
   label,
+  secondary = false,
   onClick,
 }: {
   readonly id: string;
   readonly label: string;
+  readonly secondary?: boolean;
   readonly onClick?: () => void;
 }): React.JSX.Element {
+  const className = secondary ? "osgl-menu-button osgl-menu-secondary" : "osgl-menu-button";
   return (
-    <button id={id} className="osgl-menu-button" type="button" onClick={onClick}>
+    <button id={id} className={className} type="button" onClick={onClick}>
       {label}
     </button>
   );
@@ -53,11 +56,16 @@ export function ConnectTopMenuBar(): React.JSX.Element {
         </span>
         <span className="osgl-school-pill">{institution}</span>
         <i className="osgl-rule" />
-        <MenuButton id="menu-rooms" label="Odalar" />
-        <MenuButton id="menu-departments" label="Zümreler" />
+        <MenuButton id="menu-rooms" label="Odalar" secondary />
+        <MenuButton id="menu-departments" label="Zümreler" secondary />
         <MenuButton id="arrange-side" label="Yan Yana" onClick={() => arrange("side-by-side")} />
         <MenuButton id="arrange-grid" label="Izgara" onClick={() => arrange("grid")} />
-        <MenuButton id="arrange-cascade" label="Kademeli" onClick={() => arrange("cascade")} />
+        <MenuButton
+          id="arrange-cascade"
+          label="Kademeli"
+          secondary
+          onClick={() => arrange("cascade")}
+        />
         <MenuButton
           id="menu-view"
           label="Görünüm"

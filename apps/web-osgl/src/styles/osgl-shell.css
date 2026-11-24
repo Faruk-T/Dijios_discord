@@ -40,7 +40,13 @@
   white-space: nowrap;
 }
 
+.osgl-menu-left {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .osgl-menu-right {
+  flex-shrink: 0;
   gap: 10px;
 }
 
@@ -153,7 +159,7 @@
   position: absolute;
   top: 64px;
   left: 20px;
-  z-index: 5;
+  z-index: 1;
   display: grid;
   gap: 16px;
   width: 92px;
@@ -206,4 +212,10 @@ html[data-webgl="false"] .osgl-menubar,
 html[data-reduced-motion="true"] .osgl-menubar {
   background: #10243f;
   backdrop-filter: none;
+}
+
+@media (max-width: 1380px) {
+  .osgl-menu-secondary {
+    display: none;
+  }
 }

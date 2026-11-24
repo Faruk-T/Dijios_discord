@@ -31,6 +31,8 @@ interface WindowManagerState {
   arrange: (mode: ArrangeMode) => void;
 }
 
+const BASE_WINDOW_Z = 20;
+
 const VIEWPORT = (): Viewport => ({
   width: typeof window === "undefined" ? 1280 : window.innerWidth,
   height: typeof window === "undefined" ? 720 : Math.max(320, window.innerHeight - 120),
@@ -38,8 +40,12 @@ const VIEWPORT = (): Viewport => ({
   left: 16,
 });
 
+function nextWindowZ(windows: readonly ManagedWindow[]): number {
+  return windows.reduce((max, item) => Math.max(max, item.zIndex), BASE_WINDOW_Z - 1) + 1;
+}
+
 function raise(windows: readonly ManagedWindow[], instanceId: string): ManagedWindow[] {
-  const nextZ = Math.max(0, ...windows.map((item) => item.zIndex)) + 1;
+  const nextZ = nextWindowZ(windows);
   return windows.map((item) =>
     item.instanceId === instanceId ? { ...item, zIndex: nextZ } : item,
   );
@@ -67,7 +73,7 @@ function openManaged(
       { x: viewport.left + 24, y: viewport.top + 24, ...descriptor.defaultSize },
       viewport,
     ),
-    zIndex: windows.length + 1,
+    zIndex: nextWindowZ(windows),
     minimized: false,
     maximized: false,
   };
