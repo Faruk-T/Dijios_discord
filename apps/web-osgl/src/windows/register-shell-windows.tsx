@@ -1,17 +1,10 @@
-import type { JSX } from "react";
+import { DepartmentFileManWindow } from "../features/academic-tools/DepartmentFileManWindow.js";
 import { MeetingMinutesWindow } from "../features/academic-tools/MeetingMinutesWindow.js";
 import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
 import { MediaStudioWindow } from "../features/settings-studio/MediaStudioWindow.js";
 import { VoiceStageWindow } from "../features/voice-video/VoiceStageWindow.js";
-import { AcademicPreview } from "./AcademicPreview.js";
 import { ThemePerformanceStudio } from "./ThemePerformanceStudio.js";
 import { windowRegistry, type WindowAppDescriptor } from "./window-registry.js";
-
-function preview(title: string, detail: string, tone: string): () => JSX.Element {
-  return function PreviewWindow(): JSX.Element {
-    return <AcademicPreview title={title} detail={detail} tone={tone} />;
-  };
-}
 
 const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
   {
@@ -49,10 +42,10 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     title: "Zümre Arşivi",
     category: "Dosya",
     icon: "folder",
-    defaultSize: { width: 680, height: 460 },
+    defaultSize: { width: 880, height: 560 },
     minSize: { width: 360, height: 240 },
-    fullBleed: false,
-    render: preview("Zümre Arşivi", "Branş dosyaları kurum izolasyonu ile saklanır.", "KVKK"),
+    fullBleed: true,
+    render: DepartmentFileManWindow,
   },
   {
     appId: "theme-performance-studio",
