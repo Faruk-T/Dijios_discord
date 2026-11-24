@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
+import { MediaStudioWindow } from "../features/settings-studio/MediaStudioWindow.js";
 import { VoiceStageWindow } from "../features/voice-video/VoiceStageWindow.js";
 import { AcademicPreview } from "./AcademicPreview.js";
 import { ThemePerformanceStudio } from "./ThemePerformanceStudio.js";
@@ -51,6 +52,16 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     minSize: { width: 360, height: 240 },
     fullBleed: false,
     render: ThemePerformanceStudio,
+  },
+  {
+    appId: "media-studio",
+    title: "Ses & Görüntü Stüdyosu",
+    category: "Ses",
+    icon: "tune",
+    defaultSize: { width: 520, height: 420 },
+    minSize: { width: 360, height: 240 },
+    fullBleed: false,
+    render: MediaStudioWindow,
   },
 ];
 
