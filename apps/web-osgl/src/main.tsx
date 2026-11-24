@@ -8,6 +8,7 @@ import "./styles/dijios-hig.css";
 import "./styles/login-portal.css";
 import "./styles/osgl-shell.css";
 import "./styles/osgl-windows.css";
+import "./styles/communication-hub.css";
 
 const root = document.getElementById("root");
 if (root === null) {

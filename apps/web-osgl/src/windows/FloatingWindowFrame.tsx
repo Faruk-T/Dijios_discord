@@ -114,7 +114,9 @@ export function FloatingWindowFrame({
       }}
     >
       <WindowChrome item={item} />
-      <div className="osgl-window-body">{descriptor.render()}</div>
+      <div className={descriptor.fullBleed ? "osgl-window-body is-bleed" : "osgl-window-body"}>
+        {descriptor.render()}
+      </div>
       <button
         className="osgl-resize"
         type="button"

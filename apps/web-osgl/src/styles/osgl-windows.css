@@ -85,6 +85,10 @@
   content: "+";
 }
 
+.osgl-window-body.is-bleed {
+  padding: 0;
+}
+
 .osgl-window-body {
   height: calc(100% - 44px);
   padding: 16px;

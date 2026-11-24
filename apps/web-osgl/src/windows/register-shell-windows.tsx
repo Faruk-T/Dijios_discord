@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
 import { AcademicPreview } from "./AcademicPreview.js";
 import { ThemePerformanceStudio } from "./ThemePerformanceStudio.js";
 import { windowRegistry, type WindowAppDescriptor } from "./window-registry.js";
@@ -15,14 +16,10 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     title: "İletişim Merkezi",
     category: "İletişim",
     icon: "forum",
-    defaultSize: { width: 720, height: 480 },
+    defaultSize: { width: 1040, height: 640 },
     minSize: { width: 360, height: 240 },
-    fullBleed: false,
-    render: preview(
-      "İletişim Merkezi",
-      "Zümre kanalları ve öğretmenler odası tek çatıda.",
-      "Zümre",
-    ),
+    fullBleed: true,
+    render: CommunicationHubWindow,
   },
   {
     appId: "voice-stage",
