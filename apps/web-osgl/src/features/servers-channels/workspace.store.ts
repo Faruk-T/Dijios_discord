@@ -31,6 +31,8 @@ export interface WorkspaceState {
   setStatus: (session: ClientSession, status: PresenceStatus) => Promise<void>;
 }
 
+let stopPresence: (() => void) | null = null;
+
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   client: createWorkspaceClient(),
   tree: null,
@@ -43,9 +45,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   deafened: false,
   status: "ONLINE",
   load: async (session) => {
+    stopPresence?.();
     const snapshot = await get().client.load(session);
     const first = snapshot.tree.categories[0]?.channels[0]?.id ?? null;
-    get().client.subscribe(session, (payload) => {
+    stopPresence = get().client.subscribe(session, (payload) => {
       set({
         roster: get().roster.map((teacher) =>
           teacher.userId === payload.userId
@@ -54,7 +57,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         ),
       });
     });
-    set({ tree: snapshot.tree, roster: snapshot.roster, activeChannelId: first });
+    set({
+      tree: snapshot.tree,
+      roster: snapshot.roster,
+      activeChannelId: first,
+      profileUserId: null,
+    });
   },
   selectChannel: (activeChannelId) => set({ activeChannelId }),
   setFilter: (filter) => set({ filter }),
