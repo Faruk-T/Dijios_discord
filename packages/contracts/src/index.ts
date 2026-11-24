@@ -56,6 +56,13 @@ export {
 } from "./messaging.contracts.js";
 
 export type {
+  LiveKitWebhookEventDto,
+  StageControlRequestDto,
+  VoiceTokenPermissions,
+  VoiceTokenResponse,
+} from "./voice-media.contracts.js";
+
+export type {
   ChatMessageSendPayload,
   ClientToServerEvents,
   HandRaisePayload,
