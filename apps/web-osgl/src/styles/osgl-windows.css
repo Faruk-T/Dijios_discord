@@ -1,0 +1,196 @@
+.osgl-window {
+  position: absolute;
+  overflow: hidden;
+  background: var(--uxu-bg-elevated, #f7f9fc);
+  border: 1px solid var(--uxu-border-strong, rgba(255, 255, 255, 0.28));
+  border-radius: 18px;
+  box-shadow:
+    var(--uxu-shadow-elevated, 0 24px 60px rgba(0, 12, 32, 0.28)),
+    var(--uxu-specular-inset, inset 0 1px 0 rgba(255, 255, 255, 0.45));
+}
+
+.osgl-window.is-focused {
+  border-color: #457b9d;
+  box-shadow:
+    0 0 0 1px #457b9d,
+    var(--uxu-shadow-elevated, 0 24px 60px rgba(0, 12, 32, 0.28));
+}
+
+.osgl-window-title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+  cursor: grab;
+  background: color-mix(in srgb, var(--uxu-bg-elevated, #fff) 88%, #457b9d 12%);
+}
+
+.osgl-traffic-row,
+.osgl-window-heading {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.osgl-window-heading {
+  flex: 1;
+  min-width: 0;
+}
+.osgl-window-heading strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.osgl-traffic {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+}
+
+.osgl-traffic::after {
+  position: absolute;
+  inset: 0;
+  font-size: 10px;
+  line-height: 13px;
+  color: rgba(40, 16, 16, 0.72);
+  text-align: center;
+  content: "";
+  opacity: 0;
+}
+
+.osgl-traffic:hover::after {
+  opacity: 1;
+}
+.osgl-traffic-close {
+  background: #ff5f57;
+}
+.osgl-traffic-min {
+  background: #febc2e;
+}
+.osgl-traffic-max {
+  background: #28c840;
+}
+.osgl-traffic-close:hover::after {
+  content: "×";
+}
+.osgl-traffic-min:hover::after {
+  content: "–";
+}
+.osgl-traffic-max:hover::after {
+  content: "+";
+}
+
+.osgl-window-body {
+  height: calc(100% - 44px);
+  padding: 16px;
+  overflow: auto;
+  background: var(--uxu-bg-elevated, #f7f9fc);
+}
+
+.osgl-resize {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 50%,
+    rgba(69, 123, 157, 0.85) 50% 58%,
+    transparent 58% 68%,
+    rgba(69, 123, 157, 0.85) 68% 76%,
+    transparent 76% 84%,
+    rgba(69, 123, 157, 0.85) 84%
+  );
+  border: 0;
+  cursor: nwse-resize;
+}
+
+.osgl-dock {
+  position: fixed;
+  bottom: 14px;
+  left: 50%;
+  z-index: 1800;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  padding: 8px 12px;
+  background: var(--uxu-liquid-regular-bg, rgba(255, 255, 255, 0.18));
+  border: 1px solid var(--uxu-border-strong, rgba(255, 255, 255, 0.28));
+  border-radius: 24px;
+  box-shadow:
+    var(--uxu-shadow-elevated, 0 18px 40px rgba(0, 12, 32, 0.28)),
+    var(--uxu-specular-inset, inset 0 1px 0 rgba(255, 255, 255, 0.45));
+  backdrop-filter: blur(28px) saturate(180%);
+  transform: translateX(-50%);
+}
+
+.osgl-dock-app,
+.osgl-dock-tool {
+  position: relative;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  color: #f8fafc;
+  background: linear-gradient(160deg, rgba(69, 123, 157, 0.85), rgba(0, 33, 71, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 16px;
+  transition: transform 160ms ease;
+}
+
+.osgl-dock-app:hover,
+.osgl-dock-tool:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.osgl-dock-dot {
+  position: absolute;
+  bottom: -6px;
+  width: 5px;
+  height: 5px;
+  background: #7ee0ff;
+  border-radius: 999px;
+  box-shadow: 0 0 8px #7ee0ff;
+}
+
+.osgl-dock-rule {
+  width: 1px;
+  height: 32px;
+  margin: 0 4px 8px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.osgl-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.osgl-theme-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.osgl-color-preview {
+  height: 72px;
+  background: linear-gradient(135deg, #002147, #1d3557 55%, #457b9d);
+  border-radius: 16px;
+}
+
+html[data-webgl="false"] .osgl-dock,
+html[data-reduced-motion="true"] .osgl-dock {
+  background: #163154;
+  backdrop-filter: none;
+}
+
+html[data-reduced-motion="true"] .osgl-dock-app,
+html[data-reduced-motion="true"] .osgl-dock-tool {
+  transition: none;
+}

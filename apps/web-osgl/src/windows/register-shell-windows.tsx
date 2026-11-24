@@ -1,14 +1,11 @@
 import type { JSX } from "react";
+import { AcademicPreview } from "./AcademicPreview.js";
+import { ThemePerformanceStudio } from "./ThemePerformanceStudio.js";
 import { windowRegistry, type WindowAppDescriptor } from "./window-registry.js";
 
-function placeholder(title: string, detail: string): () => JSX.Element {
-  return function PlaceholderWindow(): JSX.Element {
-    return (
-      <article>
-        <h2>{title}</h2>
-        <p>{detail}</p>
-      </article>
-    );
+function preview(title: string, detail: string, tone: string): () => JSX.Element {
+  return function PreviewWindow(): JSX.Element {
+    return <AcademicPreview title={title} detail={detail} tone={tone} />;
   };
 }
 
@@ -21,7 +18,11 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     defaultSize: { width: 720, height: 480 },
     minSize: { width: 360, height: 240 },
     fullBleed: false,
-    render: placeholder("İletişim Merkezi", "Zümre kanalları Faz 3 ile açılır."),
+    render: preview(
+      "İletişim Merkezi",
+      "Zümre kanalları ve öğretmenler odası tek çatıda.",
+      "Zümre",
+    ),
   },
   {
     appId: "voice-stage",
@@ -31,7 +32,7 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     defaultSize: { width: 800, height: 520 },
     minSize: { width: 360, height: 240 },
     fullBleed: false,
-    render: placeholder("Görüntülü Zümre Sahnesi", "Canlı sahne Faz 5 ile açılır."),
+    render: preview("Görüntülü Zümre Sahnesi", "50+ kişilik ses ve HD video sahnesi hazır.", "HD"),
   },
   {
     appId: "department-files",
@@ -41,7 +42,7 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     defaultSize: { width: 680, height: 460 },
     minSize: { width: 360, height: 240 },
     fullBleed: false,
-    render: placeholder("Zümre Arşivi", "Dosya gezgini sonraki fazda açılır."),
+    render: preview("Zümre Arşivi", "Branş dosyaları kurum izolasyonu ile saklanır.", "KVKK"),
   },
   {
     appId: "theme-performance-studio",
@@ -51,10 +52,7 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     defaultSize: { width: 640, height: 420 },
     minSize: { width: 360, height: 240 },
     fullBleed: false,
-    render: placeholder(
-      "Tema & Akıllı Tahta Stüdyosu",
-      "Performans tercihleri bu pencerede toplanır.",
-    ),
+    render: ThemePerformanceStudio,
   },
 ];
 

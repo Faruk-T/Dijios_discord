@@ -1,10 +1,10 @@
-import type { JSX } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
-import { Button } from "truncgil-uxigl";
+import type { JSX, PointerEvent as ReactPointerEvent } from "react";
+import { Badge, GoogleIcon } from "truncgil-uxigl";
 import { windowRegistry } from "./window-registry.js";
 import { useWindowManager, type ManagedWindow } from "./window-manager.store.js";
 
 function WindowChrome({ item }: { readonly item: ManagedWindow }): JSX.Element {
+  const descriptor = windowRegistry.get(item.appId);
   const focus = useWindowManager((state) => state.focus);
   const close = useWindowManager((state) => state.close);
   const toggleMinimize = useWindowManager((state) => state.toggleMinimize);
@@ -12,6 +12,10 @@ function WindowChrome({ item }: { readonly item: ManagedWindow }): JSX.Element {
   const move = useWindowManager((state) => state.move);
 
   const onDrag = (event: ReactPointerEvent<HTMLElement>): void => {
+    const target = event.target;
+    if (target instanceof Element && target.closest(".osgl-traffic") !== null) {
+      return;
+    }
     const handle = event.currentTarget;
     handle.setPointerCapture(event.pointerId);
     const originX = event.clientX - item.rect.x;
@@ -29,38 +33,41 @@ function WindowChrome({ item }: { readonly item: ManagedWindow }): JSX.Element {
   };
 
   return (
-    <header className="osgl-liquid" style={{ height: 44, display: "flex" }} onPointerDown={onDrag}>
-      <Button
-        id={`close-${item.instanceId}`}
-        type="button"
-        variant="danger"
-        size="xs"
-        aria-label="Kapat"
-        onClick={() => close(item.instanceId)}
-      >
-        Kapat
-      </Button>
-      <Button
-        id={`min-${item.instanceId}`}
-        type="button"
-        variant="ghost"
-        size="xs"
-        aria-label="Küçült"
-        onClick={() => toggleMinimize(item.instanceId)}
-      >
-        Küçült
-      </Button>
-      <Button
-        id={`max-${item.instanceId}`}
-        type="button"
-        variant="ghost"
-        size="xs"
-        aria-label="Büyüt"
-        onClick={() => toggleMaximize(item.instanceId)}
-      >
-        Büyüt
-      </Button>
-      <strong>{item.title}</strong>
+    <header
+      className="osgl-window-title"
+      onPointerDown={onDrag}
+      onDoubleClick={() => toggleMaximize(item.instanceId)}
+    >
+      <span className="osgl-traffic-row">
+        <button
+          id={`close-${item.instanceId}`}
+          className="osgl-traffic osgl-traffic-close"
+          type="button"
+          aria-label="Kapat"
+          onClick={() => close(item.instanceId)}
+        />
+        <button
+          id={`min-${item.instanceId}`}
+          className="osgl-traffic osgl-traffic-min"
+          type="button"
+          aria-label="Küçült"
+          onClick={() => toggleMinimize(item.instanceId)}
+        />
+        <button
+          id={`max-${item.instanceId}`}
+          className="osgl-traffic osgl-traffic-max"
+          type="button"
+          aria-label="Büyüt"
+          onClick={() => toggleMaximize(item.instanceId)}
+        />
+      </span>
+      <span className="osgl-window-heading">
+        <GoogleIcon name={descriptor?.icon ?? "widgets"} />
+        <strong>{item.title}</strong>
+      </span>
+      <Badge size="sm" variant="tonal">
+        {descriptor?.category ?? "Pencere"}
+      </Badge>
     </header>
   );
 }
@@ -70,6 +77,7 @@ export function FloatingWindowFrame({
 }: {
   readonly item: ManagedWindow;
 }): JSX.Element | null {
+  const focusedId = useWindowManager((state) => state.focusedId);
   const descriptor = windowRegistry.get(item.appId);
   const resize = useWindowManager((state) => state.resize);
   if (item.minimized || descriptor === null) {
@@ -97,9 +105,8 @@ export function FloatingWindowFrame({
   };
   return (
     <section
-      className="osgl-content-surface"
+      className={focusedId === item.instanceId ? "osgl-window is-focused" : "osgl-window"}
       style={{
-        position: "absolute",
         transform: `translate3d(${item.rect.x}px, ${item.rect.y}px, 0)`,
         width: item.rect.width,
         height: item.rect.height,
@@ -107,12 +114,12 @@ export function FloatingWindowFrame({
       }}
     >
       <WindowChrome item={item} />
-      <div style={{ height: "calc(100% - 44px)", overflow: "auto" }}>{descriptor.render()}</div>
+      <div className="osgl-window-body">{descriptor.render()}</div>
       <button
+        className="osgl-resize"
         type="button"
         aria-label="Boyutlandır"
         onPointerDown={onResize}
-        style={{ position: "absolute", right: 0, bottom: 0, width: 44, height: 44 }}
       />
     </section>
   );
