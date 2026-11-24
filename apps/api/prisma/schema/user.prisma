@@ -1,0 +1,35 @@
+enum AcademicSystemRole {
+  FOUNDER
+  PRINCIPAL
+  DEPT_HEAD
+  TEACHER
+  COUNSELOR
+}
+
+model User {
+  id             String             @id @db.Uuid
+  publicId       String             @unique
+  institutionId  String             @db.Uuid
+  campusId       String?            @db.Uuid
+  dijiosUserId   String             @unique
+  fullName       String
+  email          String
+  phone          String
+  avatarUrl      String?
+  systemRole     AcademicSystemRole
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  institution    Institution        @relation(fields: [institutionId], references: [id])
+  campus         Campus?            @relation(fields: [campusId], references: [id])
+  teacherProfile TeacherProfile?
+
+  @@index([institutionId])
+}
+
+model TeacherProfile {
+  userId         String @id @db.Uuid
+  branchName     String
+  title          String
+  timetableCache Json?
+  user           User   @relation(fields: [userId], references: [id])
+}
