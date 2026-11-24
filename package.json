@@ -2,6 +2,7 @@
   "name": "dijios-connect",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.15.1",
   "engines": {
     "node": ">=22"
@@ -10,8 +11,9 @@
     "build": "turbo run build --filter=./apps/* --filter=./packages/*",
     "dev": "turbo run dev --filter=./apps/* --filter=./packages/*",
     "lint": "turbo run lint --filter=./apps/* --filter=./packages/*",
-    "typecheck": "turbo run typecheck --filter=./apps/* --filter=./packages/*",
-    "test": "turbo run test --filter=./apps/* --filter=./packages/*"
+    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false && turbo run typecheck --filter=./apps/* --filter=./packages/*",
+    "test": "vitest run && turbo run test --filter=./apps/* --filter=./packages/*",
+    "check:lines": "node scripts/check-file-lines.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
