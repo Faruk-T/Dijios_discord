@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.pnpm-store/
+
+# Build & Turborepo outputs
+dist/
+build/
+out/
+.turbo/
+.astro/
+.next/
+*.tsbuildinfo
+
+# Tauri / Rust outputs
+apps/desktop-tauri/src-tauri/target/
+
+# Environment variables & secrets (NEVER commit real secrets)
+.env
+.env.*
+!.env.example
+
+# Logs & runtime data
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+pids/
+*.pid
+*.seed
+
+# Testing & coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Local storage / Docker volumes
+.docker-data/
+postgres-data/
+redis-data/
+minio-data/
+
+# IDE & OS files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
