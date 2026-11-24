@@ -23,6 +23,8 @@
   justify-content: space-between;
   height: 44px;
   padding: 0 16px;
+  overflow: hidden;
+  white-space: nowrap;
   color: #f8fafc;
   background: var(--uxu-liquid-regular-bg, rgba(8, 22, 44, 0.62));
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
@@ -35,6 +37,7 @@
   display: flex;
   gap: 6px;
   align-items: center;
+  white-space: nowrap;
 }
 
 .osgl-menu-right {
@@ -59,9 +62,12 @@
 }
 
 .osgl-school-pill {
+  max-width: 148px;
   padding: 3px 10px;
+  overflow: hidden;
   font-size: 12px;
   font-weight: 650;
+  text-overflow: ellipsis;
   background: color-mix(in srgb, var(--djs-primary, #457b9d) 28%, transparent);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
@@ -78,6 +84,7 @@
   padding: 0 8px;
   font-size: 13px;
   color: inherit;
+  white-space: nowrap;
   background: transparent;
   border: 0;
   border-radius: 8px;
@@ -97,6 +104,7 @@
   padding: 0 10px;
   font-size: 12px;
   color: #f8fafc;
+  white-space: nowrap;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 999px;
