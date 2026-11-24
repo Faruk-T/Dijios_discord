@@ -1,0 +1,15 @@
+model MeetingMinutes {
+  id            String   @id @db.Uuid
+  publicId      String   @unique
+  institutionId String   @db.Uuid
+  channelId     String   @db.Uuid
+  title         String
+  markdownBody  String
+  decisions     Json
+  attendees     Json
+  createdBy     String   @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([institutionId, channelId])
+}
