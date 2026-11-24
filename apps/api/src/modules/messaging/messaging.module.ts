@@ -26,6 +26,6 @@ import { UnreadTrackerService } from "./unread-tracker.service.js";
     SearchService,
     { provide: MESSAGE_STORE_PORT, useClass: InMemoryMessageStore },
   ],
-  exports: [MessagesService, MESSAGE_STORE_PORT],
+  exports: [MessagesService, ChannelAccessService, MESSAGE_STORE_PORT],
 })
 export class MessagingModule {}
