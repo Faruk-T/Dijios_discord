@@ -34,6 +34,7 @@ export interface StoredWorkspace {
 
 export interface WorkspaceStorePort {
   findByInstitution(institutionId: string): StoredWorkspace | null;
+  list(): readonly StoredWorkspace[];
   save(workspace: StoredWorkspace): void;
 }
 

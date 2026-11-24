@@ -9,6 +9,10 @@ export class InMemoryWorkspaceStore implements WorkspaceStorePort {
     return this.workspaces.get(institutionId) ?? null;
   }
 
+  list(): readonly StoredWorkspace[] {
+    return [...this.workspaces.values()];
+  }
+
   save(workspace: StoredWorkspace): void {
     this.workspaces.set(workspace.institutionId, workspace);
   }

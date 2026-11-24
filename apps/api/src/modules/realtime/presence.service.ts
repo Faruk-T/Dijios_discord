@@ -48,6 +48,10 @@ export class PresenceService {
     this.publisher = publisher;
   }
 
+  publishRoom(institutionId: string, payload: VoiceRoomStatePayload): void {
+    this.publisher?.voice(institutionId, payload);
+  }
+
   attachChannel(slug: string, channelId: string): void {
     this.channels.set(slug, channelId);
   }
