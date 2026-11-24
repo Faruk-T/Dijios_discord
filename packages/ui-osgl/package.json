@@ -14,7 +14,7 @@
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
-    "test": "node --test"
+    "test": "vitest run --config vitest.config.mjs"
   },
   "devDependencies": {
     "@types/react": "^19.3.1",

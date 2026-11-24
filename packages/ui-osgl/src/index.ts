@@ -5,3 +5,10 @@ export const DIJIOS_BRAND_SEEDS = {
   prussianNavy: "#1D3557",
   steelCerulean: "#457B9D",
 } as const;
+
+export { DIJIOS_OXFORD_SEED, DIJIOS_THEME_VARIABLES } from "./theme/dijios-theme.tokens.js";
+export {
+  applyInstitutionSeed,
+  resolveInstitutionColor,
+  type InstitutionSeedSurface,
+} from "./theme/apply-institution-seed.js";
