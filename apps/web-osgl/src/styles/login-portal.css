@@ -16,11 +16,6 @@
     radial-gradient(circle at 78% 72%, rgba(29, 53, 87, 0.9), transparent 42%), #002147;
 }
 
-.login-aurora canvas {
-  width: 100%;
-  height: 100%;
-}
-
 .login-portal {
   position: relative;
   z-index: 1;
@@ -45,7 +40,6 @@
 }
 
 .login-lights,
-.login-title-cluster,
 .login-secure {
   display: flex;
   gap: 8px;
@@ -118,7 +112,6 @@
 .login-facts {
   display: grid;
   gap: 10px;
-  margin-top: auto;
 }
 
 .login-fact {
@@ -217,19 +210,6 @@
   transform: translateY(-2px);
 }
 
-.login-persona strong,
-.login-persona span {
-  display: block;
-}
-
-.login-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
 @media (max-width: 860px) {
   .login-columns {
     grid-template-columns: 1fr;
@@ -237,8 +217,4 @@
   .login-brand h1 {
     font-size: 28px;
   }
-}
-
-html[data-reduced-motion="true"] .login-persona {
-  transition: none;
 }

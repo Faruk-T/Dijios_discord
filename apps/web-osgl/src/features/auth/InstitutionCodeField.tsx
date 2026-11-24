@@ -44,28 +44,13 @@ export function InstitutionCodeField(): React.JSX.Element {
           { value: "manual", label: "Manuel Kod" },
         ]}
       />
-      <button
-        id="detect-institution"
-        className="login-sr"
-        type="button"
-        onClick={() => setAlias("fen-koleji")}
-      >
+      <button id="detect-institution" hidden type="button" onClick={() => setAlias("fen-koleji")}>
         Otomatik Algıla
       </button>
-      <button
-        id="switch-anadolu"
-        className="login-sr"
-        type="button"
-        onClick={() => setAlias("anadolu-lisesi")}
-      >
+      <button id="switch-anadolu" hidden type="button" onClick={() => setAlias("anadolu-lisesi")}>
         anadolu-lisesi
       </button>
-      <button
-        id="manual-institution"
-        className="login-sr"
-        type="button"
-        onClick={() => setAlias("")}
-      >
+      <button id="manual-institution" hidden type="button" onClick={() => setAlias("")}>
         Kurum kodunu manuel girmek istiyorum
       </button>
       {mode === "manual" ? (
