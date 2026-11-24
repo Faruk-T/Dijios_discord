@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { Avatar, GoogleIcon } from "truncgil-uxigl";
 import { useAuthStore } from "../auth/auth.store.js";
+import { PresenceStatusMenu } from "../presence-timetable/PresenceStatusMenu.js";
 import { useWorkspaceStore } from "./workspace.store.js";
 
 export function VoiceQuickFooterBar(): JSX.Element {
@@ -16,6 +17,7 @@ export function VoiceQuickFooterBar(): JSX.Element {
         <strong>{session?.fullName}</strong>
         <small>{session?.branchName}</small>
       </span>
+      <PresenceStatusMenu />
       <button type="button" aria-label="Mikrofon" onClick={() => setMuted(!muted)}>
         <GoogleIcon name={muted ? "mic_off" : "mic"} />
       </button>

@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { useEffect } from "react";
 import { useAuthStore } from "../auth/auth.store.js";
+import { MemberRosterPanel } from "../presence-timetable/MemberRosterPanel.js";
 import { ActiveChannelStage } from "./ActiveChannelStage.js";
 import { CampusIconRail } from "./CampusIconRail.js";
 import { ChannelTreeSidebar } from "./ChannelTreeSidebar.js";
@@ -24,7 +25,7 @@ export function CommunicationHubWindow(): JSX.Element {
         <VoiceQuickFooterBar />
       </div>
       <ActiveChannelStage />
-      {rosterOpen ? <aside className="hub-roster" aria-label="Öğretmen kadrosu" /> : null}
+      {rosterOpen ? <MemberRosterPanel /> : null}
     </div>
   );
 }
