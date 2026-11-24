@@ -21,7 +21,9 @@ export function ScreenShareStage(): JSX.Element | null {
           </button>
         ))}
       </header>
-      <div className="stage-preview" role="img" aria-label="1080p belge önizlemesi" />
+      <div className="stage-share-zoom">
+        <div className="stage-preview" role="img" aria-label="1080p belge önizlemesi" />
+      </div>
     </section>
   );
 }

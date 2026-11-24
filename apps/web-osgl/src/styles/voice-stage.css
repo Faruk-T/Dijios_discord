@@ -105,12 +105,27 @@
   padding: 12px;
 }
 
+.stage-share {
+  overflow: hidden;
+}
+
+.stage-share-zoom {
+  max-height: 140px;
+  overflow: auto;
+}
+
+.stage-share .stage-preview {
+  transform-origin: top left;
+}
+
 .stage-share[data-zoom="1.5"] .stage-preview {
   transform: scale(1.5);
+  transform-origin: top left;
 }
 
 .stage-share[data-zoom="2"] .stage-preview {
   transform: scale(2);
+  transform-origin: top left;
 }
 
 .pip-card {

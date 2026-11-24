@@ -7,12 +7,19 @@ export function teacherNoiseConstraints(enabled: boolean): MediaTrackConstraints
   };
 }
 
+let openContext: AudioContext | null = null;
+
 export function shapeTeacherNoise(stream: MediaStream | null, enabled: boolean): void {
+  if (openContext !== null) {
+    void openContext.close();
+    openContext = null;
+  }
   const Context = globalThis.AudioContext;
   if (!enabled || Context === undefined || stream === null) {
     return;
   }
   const context = new Context();
+  openContext = context;
   const source = context.createMediaStreamSource(stream);
   const highpass = context.createBiquadFilter();
   highpass.type = "highpass";
