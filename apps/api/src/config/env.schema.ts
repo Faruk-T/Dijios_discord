@@ -11,6 +11,9 @@ export const envSchema = z.object({
   REDIS_URL: z.string().min(1),
   REDIS_ADAPTER_ENABLED: z.string().default("false"),
   CORS_ORIGIN: z.string().min(1).default("http://localhost:5173"),
+  LIVEKIT_URL: z.string().min(1).default("ws://localhost:7880"),
+  LIVEKIT_API_KEY: z.string().min(1).default("devkey"),
+  LIVEKIT_API_SECRET: z.string().min(16).default("dijios-connect-local-dev-secret-key"),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;
