@@ -56,8 +56,7 @@ export class MessagesController {
     @Param("channelId") channelId: string,
     @Body() body: unknown,
   ): MessageSummary {
-    const content = z.object({ content: z.string().min(1) }).parse(body);
-    return this.messages.create(auth(request), channelId, content.content, null);
+    return this.messages.create(auth(request), channelId, readContent(body), null);
   }
 
   @Patch("messages/:messageId")
@@ -66,8 +65,7 @@ export class MessagesController {
     @Param("messageId") messageId: string,
     @Body() body: unknown,
   ): MessageSummary {
-    const content = z.object({ content: z.string().min(1) }).parse(body);
-    return this.messages.update(auth(request), messageId, content.content);
+    return this.messages.update(auth(request), messageId, readContent(body));
   }
 
   @Delete("messages/:messageId")
@@ -82,8 +80,7 @@ export class MessagesController {
     @Param("messageId") messageId: string,
     @Body() body: unknown,
   ): MessageSummary {
-    const emoji = z.object({ emoji: z.string().min(1) }).parse(body);
-    return this.reactions.toggle(auth(request), messageId, emoji.emoji);
+    return this.reactions.toggle(auth(request), messageId, readEmoji(body));
   }
 
   @Get("messages/:messageId/thread")
@@ -100,8 +97,7 @@ export class MessagesController {
     @Param("messageId") messageId: string,
     @Body() body: unknown,
   ): MessageSummary {
-    const content = z.object({ content: z.string().min(1) }).parse(body);
-    return this.threads.reply(auth(request), messageId, content.content);
+    return this.threads.reply(auth(request), messageId, readContent(body));
   }
 
   @Post("messages/:messageId/pin")
@@ -139,6 +135,25 @@ function auth(request: FastifyRequest): AuthContext {
     throw new UnauthorizedDomainException();
   }
   return request.authContext;
+}
+
+const contentSchema = z.object({ content: z.string().min(1) });
+const emojiSchema = z.object({ emoji: z.string().min(1) });
+
+function readContent(body: unknown): string {
+  const parsed = contentSchema.safeParse(body);
+  if (!parsed.success) {
+    throw new ValidationDomainException("Message payload is invalid.");
+  }
+  return parsed.data.content;
+}
+
+function readEmoji(body: unknown): string {
+  const parsed = emojiSchema.safeParse(body);
+  if (!parsed.success) {
+    throw new ValidationDomainException("Reaction payload is invalid.");
+  }
+  return parsed.data.emoji;
 }
 
 function numberLimit(limit: string | undefined): number {

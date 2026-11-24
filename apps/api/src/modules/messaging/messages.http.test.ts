@@ -131,7 +131,29 @@ describe("channel messages", () => {
     expect(cleared.json()).toMatchObject({ reactions: [] });
     await expectThreadPinAndRead(app, founder, teacher, math, messageId);
   });
+
+  it("returns a validation problem when the message body is empty", async () => {
+    await expectEmptyMessageRejected(app);
+  });
 });
+
+async function expectEmptyMessageRejected(app: NestFastifyApplication): Promise<void> {
+  const founder = await login(app, "founder.fen");
+  const tree = await app.inject({
+    method: "GET",
+    url: "/api/v1/workspaces/current/tree",
+    headers: { authorization: `Bearer ${founder}` },
+  });
+  const math = channelId(tree.json(), "matematik-zumresi");
+  const response = await app.inject({
+    method: "POST",
+    url: `/api/v1/channels/${math}/messages`,
+    headers: { authorization: `Bearer ${founder}` },
+    payload: {},
+  });
+  expect(response.statusCode).toBe(400);
+  expect(response.json()).toMatchObject({ code: "VALIDATION_FAILED", status: 400 });
+}
 
 async function expectThreadPinAndRead(
   app: NestFastifyApplication,
