@@ -45,6 +45,12 @@ describe("scanWorkspace", () => {
     await writeFile(path.join(root, "node_modules", "pkg", "huge.ts"), fileBody(400), "utf8");
     await writeFile(path.join(root, "dist", "huge.js"), fileBody(400), "utf8");
     await writeFile(path.join(root, "pnpm-lock.yaml"), fileBody(400), "utf8");
+    await mkdir(path.join(root, ".astro"));
+    await mkdir(path.join(root, "target"));
+    await mkdir(path.join(root, "generated"));
+    await writeFile(path.join(root, ".astro", "huge.ts"), fileBody(400), "utf8");
+    await writeFile(path.join(root, "target", "huge.rs"), fileBody(400), "utf8");
+    await writeFile(path.join(root, "generated", "huge.ts"), fileBody(400), "utf8");
 
     const report = await scanWorkspace(root);
     expect(report.warnings.map((finding) => finding.filePath)).toEqual([

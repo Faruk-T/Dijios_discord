@@ -25,6 +25,9 @@ const EXCLUDED_DIRECTORIES = new Set([
   "coverage",
   "build",
   "out",
+  ".astro",
+  "target",
+  "generated",
 ]);
 
 const EXCLUDED_FILE_NAMES = new Set(["pnpm-lock.yaml"]);
