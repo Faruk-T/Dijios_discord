@@ -9,6 +9,7 @@ import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/web
 import type { Server, Socket } from "socket.io";
 import { parseUuidV7 } from "../../common/ids/id-generator.js";
 import { TokenService } from "../auth/token.service.js";
+import { CampusAlertEvents } from "./campus-alert.events.js";
 import { ChatEvents } from "./chat-events.js";
 import { PresenceService } from "./presence.service.js";
 import { readHandshakeToken } from "./ws-auth.helper.js";
@@ -32,6 +33,7 @@ export class WorkspaceGateway implements OnGatewayConnection, OnGatewayDisconnec
     @Inject(TokenService) private readonly tokens: TokenService,
     @Inject(PresenceService) private readonly presence: PresenceService,
     @Inject(ChatEvents) private readonly chat: ChatEvents,
+    @Inject(CampusAlertEvents) private readonly campus: CampusAlertEvents,
   ) {
     this.presence.bind({
       presence: (institutionId, payload) => {
@@ -53,6 +55,11 @@ export class WorkspaceGateway implements OnGatewayConnection, OnGatewayDisconnec
       },
       typing: (institutionId, payload) => {
         this.server.to(`institution:${institutionId}`).emit("chat:typing", payload);
+      },
+    });
+    this.campus.bind({
+      publish: (institutionId, alert) => {
+        this.server.to(`institution:${institutionId}`).emit("campus:broadcast", alert);
       },
     });
   }

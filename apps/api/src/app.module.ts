@@ -3,6 +3,7 @@ import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "./common/auth/jwt-auth.guard.js";
 import { TenantScopeGuard } from "./common/tenant/tenant-scope.guard.js";
 import { ConfigModule } from "./config/config.module.js";
+import { DijiosBridgeModule } from "./modules/dijios-bridge/dijios-bridge.module.js";
 import { DirectoryModule } from "./modules/directory/directory.module.js";
 import { AuthModule } from "./modules/auth/auth.module.js";
 import { HealthModule } from "./modules/health/health.module.js";
@@ -29,6 +30,7 @@ import { WorkspacesModule } from "./modules/workspaces/workspaces.module.js";
     FilesModule,
     MediaLivekitModule,
     MinutesModule,
+    DijiosBridgeModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
