@@ -33,6 +33,11 @@ export {
   type ChannelPermissionFlags,
   type ChannelSummary,
   type ChannelType,
+  type ChannelWithOccupants,
+  type CreateChannelRequestDto,
+  type TeacherRosterEntry,
+  type WorkspaceTreeCategory,
+  type WorkspaceTreeResponse,
 } from "./workspace-channel.contracts.js";
 
 export {
