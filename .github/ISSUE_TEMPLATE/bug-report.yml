@@ -1,0 +1,28 @@
+name: "Hata Bildirimi (Bug Report)"
+description: "Ses/görüntü, mesajlaşma, osGL pencere yönetimi veya API hatalarını bildirin"
+title: "[BUG] Kısa hata özeti"
+labels: ["type:bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Etkilenen Katman"
+      options:
+        - "osGL Masaüstü Kabuğu & UI (truncgil-uxigl)"
+        - "Ses, Görüntü & Ekran Paylaşımı (LiveKit WebRTC)"
+        - "Gerçek Zamanlı Mesajlaşma & Presence (Socket.IO)"
+        - "Backend API, RBAC & Veritabanı (NestJS / Prisma)"
+        - "dijiOS SSO & Kurum Entegrasyonu"
+        - "SEO / GEO Portalı veya Tauri Masaüstü"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Yeniden Üretme Adımları"
+      placeholder: |
+        1. ...
+        2. ...
+        3. Beklenen davranış: ... / Gerçekleşen davranış: ...
+    validations:
+      required: true

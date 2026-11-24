@@ -1,0 +1,41 @@
+name: "Atomik Geliştirme Görevi (Task)"
+description: "implementation_plan.md fazlarına bağlı, <= 300 satır kuralına uygun atomik geliştirme görevi"
+title: "[M0-T0] Kısa ve net görev başlığı"
+labels: ["type:feature"]
+body:
+  - type: input
+    id: phase_ref
+    attributes:
+      label: "Faz ve Plan Referansı"
+      description: "implementation_plan.md içindeki faz ve görev kodu"
+      placeholder: "Faz 0 (M0) — Task #1"
+    validations:
+      required: true
+  - type: textarea
+    id: objective
+    attributes:
+      label: "Amaç ve Kapsam"
+      description: "Bu görevin çözdüğü somut mühendislik veya ürün ihtiyacı nedir?"
+    validations:
+      required: true
+  - type: textarea
+    id: modular_files
+    attributes:
+      label: "Üretilecek / Güncellenecek Modüller (<= 300 Satır Kuralı)"
+      description: "Her dosyanın tek sorumluluğunu (SRP) ve tahmini satır bütçesini belirtin."
+      placeholder: |
+        - `apps/api/src/...` (~120 satır)
+        - `packages/contracts/src/...` (~80 satır)
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: "Kabul Kriterleri (Definition of Done)"
+      value: |
+        - [ ] Tüm kaynak dosyalar `<= 300` satır sınırının altındadır (`pnpm check:lines` yeşil)
+        - [ ] SOLID prensipleri ve paylaşımlı tip kontratları (`@dijios-connect/contracts`) uygulanmıştır
+        - [ ] Birim / entegrasyon testleri yazılmış ve geçmiştir
+        - [ ] Değişiklikler Conventional Commits formatında atomik commitlerle iletilmiştir
+    validations:
+      required: true
