@@ -1,12 +1,12 @@
 {
   "extends": "../../packages/config/tsconfig/nestjs-api.json",
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "useDefineForClassFields": false,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.test.ts"]
+  "include": ["src/**/*.ts", "prisma/seed-data.ts"],
+  "exclude": ["src/**/*.test.ts", "prisma/**/*.test.ts"]
 }
