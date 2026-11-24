@@ -16,10 +16,12 @@
     "zod": "^4.6.7"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "node scripts/prisma-generate.mjs && tsc -p tsconfig.build.json",
+    "db:generate": "node scripts/prisma-generate.mjs",
+    "db:seed": "node --experimental-strip-types prisma/seed.ts",
     "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
     "lint": "eslint . --max-warnings 0",
-    "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
+    "typecheck": "node scripts/prisma-generate.mjs && tsc -p tsconfig.json --noEmit --pretty false && tsc -p prisma/tsconfig.json --noEmit --pretty false",
     "test": "vitest run --config vitest.config.mjs"
   },
   "devDependencies": {
