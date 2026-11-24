@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import { useEffect } from "react";
 import { useTheme } from "truncgil-uxigl";
 import { ConnectCommandPalette } from "../windows/ConnectCommandPalette.js";
+import { FloatingPipStage } from "../features/voice-video/FloatingPipStage.js";
 import { ConnectDock } from "../windows/ConnectDock.js";
 import { FloatingWindowFrame } from "../windows/FloatingWindowFrame.js";
 import { registerShellWindows } from "../windows/register-shell-windows.js";
@@ -52,6 +53,7 @@ export function OsglDesktopShell(): JSX.Element {
       {windows.map((item) => (
         <FloatingWindowFrame key={item.instanceId} item={item} />
       ))}
+      <FloatingPipStage />
       <ConnectDock />
       <ConnectCommandPalette />
     </div>
