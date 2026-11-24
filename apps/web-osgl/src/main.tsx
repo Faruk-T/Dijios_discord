@@ -5,6 +5,7 @@ import { ConnectApp } from "./app/ConnectApp.js";
 import { AppProviders } from "./app/AppProviders.js";
 import "./styles/fonts.css";
 import "./styles/dijios-hig.css";
+import "./styles/login-portal.css";
 
 const root = document.getElementById("root");
 if (root === null) {
