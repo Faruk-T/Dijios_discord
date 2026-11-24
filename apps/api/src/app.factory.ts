@@ -13,6 +13,7 @@ export async function createApp(): Promise<NestFastifyApplication> {
   app.setGlobalPrefix("api/v1");
   app.useGlobalFilters(new ProblemDetailsFilter());
   const env = app.get(EnvService);
+  app.enableCors({ origin: env.config.CORS_ORIGIN, credentials: true });
   await app.register(cookie, { secret: env.config.JWT_REFRESH_SECRET });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();

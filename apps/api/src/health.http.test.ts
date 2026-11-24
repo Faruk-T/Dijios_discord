@@ -37,6 +37,13 @@ describe("health and problem responses", () => {
       version: "0.0.0",
       environment: "test",
     });
+    const cors = await app.inject({
+      method: "GET",
+      url: "/api/v1/health",
+      headers: { origin: "http://localhost:5173" },
+    });
+    expect(cors.headers["access-control-allow-origin"]).toBe("http://localhost:5173");
+    expect(cors.headers["access-control-allow-credentials"]).toBe("true");
   });
 
   it("returns RFC 7807 problem+json for domain and http errors", async () => {
