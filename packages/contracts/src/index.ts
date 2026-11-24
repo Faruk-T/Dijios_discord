@@ -63,6 +63,12 @@ export type {
 } from "./voice-media.contracts.js";
 
 export type {
+  MeetingDecisionItem,
+  MeetingMinutesDocument,
+  SaveMeetingMinutesDto,
+} from "./meeting-minutes.contracts.js";
+
+export type {
   ChatMessageSendPayload,
   ClientToServerEvents,
   HandRaisePayload,
