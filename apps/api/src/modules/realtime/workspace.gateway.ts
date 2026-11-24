@@ -7,7 +7,9 @@ import { Inject, Injectable } from "@nestjs/common";
 import type { OnGatewayConnection, OnGatewayDisconnect } from "@nestjs/websockets";
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import type { Server, Socket } from "socket.io";
+import { parseUuidV7 } from "../../common/ids/id-generator.js";
 import { TokenService } from "../auth/token.service.js";
+import { ChatEvents } from "./chat-events.js";
 import { PresenceService } from "./presence.service.js";
 import { readHandshakeToken } from "./ws-auth.helper.js";
 
@@ -29,6 +31,7 @@ export class WorkspaceGateway implements OnGatewayConnection, OnGatewayDisconnec
   constructor(
     @Inject(TokenService) private readonly tokens: TokenService,
     @Inject(PresenceService) private readonly presence: PresenceService,
+    @Inject(ChatEvents) private readonly chat: ChatEvents,
   ) {
     this.presence.bind({
       presence: (institutionId, payload) => {
@@ -36,6 +39,20 @@ export class WorkspaceGateway implements OnGatewayConnection, OnGatewayDisconnec
       },
       voice: (institutionId, payload) => {
         this.server.to(`institution:${institutionId}`).emit("voice:room_state_updated", payload);
+      },
+    });
+    this.chat.bind({
+      created: (institutionId, message) => {
+        this.server.to(`institution:${institutionId}`).emit("chat:message_created", message);
+      },
+      updated: (institutionId, message) => {
+        this.server.to(`institution:${institutionId}`).emit("chat:message_updated", message);
+      },
+      deleted: (institutionId, payload) => {
+        this.server.to(`institution:${institutionId}`).emit("chat:message_deleted", payload);
+      },
+      typing: (institutionId, payload) => {
+        this.server.to(`institution:${institutionId}`).emit("chat:typing", payload);
       },
     });
   }
@@ -66,6 +83,19 @@ export class WorkspaceGateway implements OnGatewayConnection, OnGatewayDisconnec
       return;
     }
     this.presence.heartbeat(session.institutionId, session.userId, payload.status);
+  }
+
+  @SubscribeMessage("chat:typing_start")
+  onTyping(client: ConnectSocket, payload: { readonly channelId?: unknown }): void {
+    const session = this.sessions.get(client.id);
+    if (session === undefined || typeof payload.channelId !== "string") {
+      return;
+    }
+    this.chat.typing(session.institutionId, {
+      channelId: parseUuidV7(payload.channelId),
+      userId: parseUuidV7(session.userId),
+      active: true,
+    });
   }
 }
 
