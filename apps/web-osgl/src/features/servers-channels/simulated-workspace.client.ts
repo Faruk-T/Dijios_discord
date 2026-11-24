@@ -1,7 +1,8 @@
 import type { PresenceStatus, PresenceUpdatedPayload } from "@dijios-connect/contracts";
 import type { ClientSession } from "../auth/auth-client.port.js";
 import type { WorkspaceClientPort, WorkspaceSnapshot } from "./workspace-client.port.js";
-import { simulatedRoster, simulatedTree } from "./workspace-fixtures.js";
+import { simulatedTree } from "./workspace-fixtures.js";
+import { simulatedRoster } from "./workspace-roster.fixtures.js";
 
 export class SimulatedWorkspaceClient implements WorkspaceClientPort {
   load(session: ClientSession): Promise<WorkspaceSnapshot> {
