@@ -129,5 +129,40 @@ describe("channel messages", () => {
       payload: { emoji: "👍" },
     });
     expect(cleared.json()).toMatchObject({ reactions: [] });
+    await expectThreadPinAndRead(app, founder, teacher, math, messageId);
   });
 });
+
+async function expectThreadPinAndRead(
+  app: NestFastifyApplication,
+  founder: string,
+  teacher: string,
+  math: string,
+  messageId: string,
+): Promise<void> {
+  const reply = await app.inject({
+    method: "POST",
+    url: `/api/v1/messages/${messageId}/thread`,
+    headers: { authorization: `Bearer ${founder}` },
+    payload: { content: "Denemeyi 11-A ile çözelim." },
+  });
+  expect(reply.statusCode).toBe(201);
+  const thread = await app.inject({
+    method: "GET",
+    url: `/api/v1/messages/${messageId}/thread`,
+    headers: { authorization: `Bearer ${founder}` },
+  });
+  expect(thread.json()).toMatchObject([{ content: "Denemeyi 11-A ile çözelim." }]);
+  const pinned = await app.inject({
+    method: "POST",
+    url: `/api/v1/messages/${messageId}/pin`,
+    headers: { authorization: `Bearer ${founder}` },
+  });
+  expect(pinned.json()).toMatchObject({ isPinned: true });
+  const unread = await app.inject({
+    method: "POST",
+    url: `/api/v1/channels/${math}/read`,
+    headers: { authorization: `Bearer ${teacher}` },
+  });
+  expect(unread.json()).toMatchObject({ unreadCount: 0 });
+}
