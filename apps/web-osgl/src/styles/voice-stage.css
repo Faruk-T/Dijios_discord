@@ -1,0 +1,146 @@
+.stage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: #f8fafc;
+  background: #0b1d36;
+}
+
+.stage-body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  min-height: 0;
+}
+
+.stage-grid {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 16px;
+  overflow: auto;
+}
+
+.stage-grid[data-count="1"],
+.stage-grid[data-count="2"] {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.stage-grid[data-count="many"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stage-tile {
+  position: relative;
+  min-height: 160px;
+  padding: 12px;
+  background: #132a4a;
+  border-radius: 20px;
+}
+
+.stage-tile.is-speaking {
+  box-shadow: 0 0 0 3px #10b981;
+}
+
+.stage-preview {
+  height: 96px;
+  margin-bottom: 8px;
+  background: linear-gradient(160deg, #1d3557, #457b9d);
+  border-radius: 16px;
+}
+
+.stage-tile header,
+.stage-dock,
+.stage-share header,
+.pip-card header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.stage-badges {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+}
+
+.stage-dock,
+.stage-share,
+.stage-queue,
+.pip-card {
+  background: var(--uxu-liquid-regular-bg, rgba(19, 42, 74, 0.86));
+}
+
+.stage-dock {
+  gap: 8px;
+  justify-content: center;
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.stage-dock button,
+.stage-share button,
+.stage-queue button,
+.pip-card button,
+.studio button,
+.studio select {
+  min-width: 44px;
+  min-height: 44px;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.12);
+  border: 0;
+  border-radius: 999px;
+}
+
+.stage-dock .is-leave,
+.pip-card .is-leave {
+  background: #9b2335;
+}
+
+.stage-share,
+.stage-queue {
+  padding: 12px;
+}
+
+.stage-share[data-zoom="1.5"] .stage-preview {
+  transform: scale(1.5);
+}
+
+.stage-share[data-zoom="2"] .stage-preview {
+  transform: scale(2);
+}
+
+.pip-card {
+  position: fixed;
+  right: 16px;
+  bottom: 88px;
+  z-index: 1750;
+  width: 280px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+}
+
+.studio {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  color: #f8fafc;
+}
+
+.studio meter {
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  background: #0e2746;
+  border-radius: 999px;
+}
+
+.studio meter i {
+  display: block;
+  height: 100%;
+  background: #10b981;
+}

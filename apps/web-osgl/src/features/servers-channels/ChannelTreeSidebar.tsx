@@ -2,6 +2,8 @@ import type { JSX } from "react";
 import type { ChannelType } from "@dijios-connect/contracts";
 import { GoogleIcon } from "truncgil-uxigl";
 import { useAuthStore } from "../auth/auth.store.js";
+import { useVoiceSessionStore } from "../voice-video/voice-session.store.js";
+import { useWindowManager } from "../../windows/window-manager.store.js";
 import { useWorkspaceStore, type ChannelFilter } from "./workspace.store.js";
 import { VoiceChannelOccupants } from "./VoiceChannelOccupants.js";
 
@@ -44,7 +46,17 @@ export function ChannelTreeSidebar(): JSX.Element {
                 <button
                   className={active === channel.id ? "hub-channel is-active" : "hub-channel"}
                   type="button"
-                  onClick={() => select(channel.id)}
+                  onClick={() => {
+                    select(channel.id);
+                    if (channel.type !== "VOICE" && channel.type !== "VIDEO_STAGE") {
+                      return;
+                    }
+                    const teacher = useAuthStore.getState().session?.fullName ?? "Öğretmen";
+                    void useVoiceSessionStore
+                      .getState()
+                      .joinChannel(channel.id, channel.name, teacher);
+                    useWindowManager.getState().openApp("voice-stage");
+                  }}
                 >
                   <GoogleIcon name={iconFor(channel.type, channel.isPdrConfidential)} size="sm" />
                   <span>{channel.name}</span>

@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
+import { VoiceStageWindow } from "../features/voice-video/VoiceStageWindow.js";
 import { AcademicPreview } from "./AcademicPreview.js";
 import { ThemePerformanceStudio } from "./ThemePerformanceStudio.js";
 import { windowRegistry, type WindowAppDescriptor } from "./window-registry.js";
@@ -29,7 +30,7 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     defaultSize: { width: 800, height: 520 },
     minSize: { width: 360, height: 240 },
     fullBleed: false,
-    render: preview("Görüntülü Zümre Sahnesi", "50+ kişilik ses ve HD video sahnesi hazır.", "HD"),
+    render: VoiceStageWindow,
   },
   {
     appId: "department-files",

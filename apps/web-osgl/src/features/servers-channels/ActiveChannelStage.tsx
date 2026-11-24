@@ -1,7 +1,10 @@
 import type { JSX } from "react";
 import { Badge, GoogleIcon } from "truncgil-uxigl";
+import { useAuthStore } from "../auth/auth.store.js";
 import { ChannelChatPane } from "../messaging/ChannelChatPane.js";
 import { useMessagingStore } from "../messaging/messaging.store.js";
+import { useVoiceSessionStore } from "../voice-video/voice-session.store.js";
+import { useWindowManager } from "../../windows/window-manager.store.js";
 import { useWorkspaceStore } from "./workspace.store.js";
 
 export function ActiveChannelStage(): JSX.Element {
@@ -39,6 +42,16 @@ export function ActiveChannelStage(): JSX.Element {
         <div className="hub-card">
           <h2>Sesli Odaya Katıl / Sahneyi Aç</h2>
           <p>{channel.occupants.length} öğretmen şu an bu odada.</p>
+          <button
+            type="button"
+            onClick={() => {
+              const teacher = useAuthStore.getState().session?.fullName ?? "Öğretmen";
+              void useVoiceSessionStore.getState().joinChannel(channel.id, channel.name, teacher);
+              useWindowManager.getState().openApp("voice-stage");
+            }}
+          >
+            Sesli Odaya Katıl
+          </button>
         </div>
       ) : null}
     </section>

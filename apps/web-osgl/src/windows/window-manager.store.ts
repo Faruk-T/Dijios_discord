@@ -57,7 +57,15 @@ function openManaged(
 ): { readonly windows: ManagedWindow[]; readonly focusedId: string } | null {
   const existing = windows.find((item) => item.appId === appId);
   if (existing !== undefined) {
-    return { windows: raise(windows, existing.instanceId), focusedId: existing.instanceId };
+    const nextZ = nextWindowZ(windows);
+    return {
+      windows: windows.map((item) =>
+        item.instanceId === existing.instanceId
+          ? { ...item, zIndex: nextZ, minimized: false }
+          : item,
+      ),
+      focusedId: existing.instanceId,
+    };
   }
   const descriptor = windowRegistry.get(appId);
   if (descriptor === null) {

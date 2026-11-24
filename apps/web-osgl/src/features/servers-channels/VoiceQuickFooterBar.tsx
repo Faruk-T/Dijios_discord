@@ -2,6 +2,7 @@ import type { JSX } from "react";
 import { Avatar, GoogleIcon } from "truncgil-uxigl";
 import { useAuthStore } from "../auth/auth.store.js";
 import { useVoiceSessionStore } from "../voice-video/voice-session.store.js";
+import { useWindowManager } from "../../windows/window-manager.store.js";
 import { PresenceStatusMenu } from "../presence-timetable/PresenceStatusMenu.js";
 
 export function VoiceQuickFooterBar(): JSX.Element {
@@ -11,6 +12,7 @@ export function VoiceQuickFooterBar(): JSX.Element {
   const deafened = useVoiceSessionStore((state) => state.deafened);
   const setMic = useVoiceSessionStore((state) => state.setMicEnabled);
   const setDeafened = useVoiceSessionStore((state) => state.setDeafened);
+  const openStage = useWindowManager((state) => state.openApp);
   return (
     <div className="hub-footer">
       <Avatar shape="squircle" size="sm" name={session?.fullName ?? "Öğretmen"} status="online" />
@@ -25,7 +27,7 @@ export function VoiceQuickFooterBar(): JSX.Element {
       <button type="button" aria-label="Kulaklık" onClick={() => setDeafened(!deafened)}>
         <GoogleIcon name={deafened ? "headset_off" : "headset"} />
       </button>
-      <button type="button" aria-label="Sahneyi aç">
+      <button type="button" aria-label="Sahneyi aç" onClick={() => openStage("voice-stage")}>
         <GoogleIcon name="videocam" />
       </button>
     </div>

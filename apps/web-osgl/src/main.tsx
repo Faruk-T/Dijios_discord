@@ -10,6 +10,7 @@ import "./styles/osgl-shell.css";
 import "./styles/osgl-windows.css";
 import "./styles/communication-hub.css";
 import "./styles/messaging-pane.css";
+import "./styles/voice-stage.css";
 
 const root = document.getElementById("root");
 if (root === null) {
