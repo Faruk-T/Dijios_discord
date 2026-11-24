@@ -26,3 +26,35 @@ export {
   type PresenceStatus,
   type TeacherProfileSummary,
 } from "./tenant-auth.contracts.js";
+
+export {
+  CHANNEL_TYPES,
+  type ChannelCategorySummary,
+  type ChannelPermissionFlags,
+  type ChannelSummary,
+  type ChannelType,
+} from "./workspace-channel.contracts.js";
+
+export {
+  MESSAGE_EMBED_KINDS,
+  type AttachmentMetadata,
+  type MessageEmbedKind,
+  type MessageEmbedPayload,
+  type MessageReactionSummary,
+  type MessageSummary,
+  type ThreadSummary,
+} from "./messaging.contracts.js";
+
+export type {
+  ChatMessageSendPayload,
+  ClientToServerEvents,
+  HandRaisePayload,
+  PresenceHeartbeatPayload,
+  PresenceUpdatedPayload,
+  ServerToClientEvents,
+  TypingBroadcastPayload,
+  TypingSignalPayload,
+  VoiceParticipantSnapshot,
+  VoiceRoomStatePayload,
+  VoiceStateFlags,
+} from "./realtime-events.contracts.js";
