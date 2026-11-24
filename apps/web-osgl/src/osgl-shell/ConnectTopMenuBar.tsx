@@ -1,13 +1,30 @@
 import { useEffect, useState } from "react";
-import { Button, Switch } from "truncgil-uxigl";
+import { Avatar, GoogleIcon, Switch } from "truncgil-uxigl";
 import { useAuthStore } from "../features/auth/auth.store.js";
 import { useWindowManager } from "../windows/window-manager.store.js";
 import { ActiveVoiceMenuPill } from "./ActiveVoiceMenuPill.js";
 import { LessonBellBadge } from "./LessonBellBadge.js";
 import { useShellPreferences, watchReducedMotion } from "./shell-preferences.store.js";
 
+function MenuButton({
+  id,
+  label,
+  onClick,
+}: {
+  readonly id: string;
+  readonly label: string;
+  readonly onClick?: () => void;
+}): React.JSX.Element {
+  return (
+    <button id={id} className="osgl-menu-button" type="button" onClick={onClick}>
+      {label}
+    </button>
+  );
+}
+
 export function ConnectTopMenuBar(): React.JSX.Element {
   const institution = useAuthStore((state) => state.session?.institutionName ?? "Kurum");
+  const fullName = useAuthStore((state) => state.session?.fullName ?? "Öğretmen");
   const logout = useAuthStore((state) => state.logout);
   const arrange = useWindowManager((state) => state.arrange);
   const theme = useShellPreferences((state) => state.theme);
@@ -28,70 +45,51 @@ export function ConnectTopMenuBar(): React.JSX.Element {
   }, []);
 
   return (
-    <header
-      className="osgl-liquid"
-      style={{ height: 44, display: "flex", alignItems: "center", gap: 8 }}
-    >
-      <strong>dijiOS Connect</strong>
-      <span>{institution}</span>
-      <Button id="menu-rooms" type="button" variant="ghost" size="sm">
-        Odalar
-      </Button>
-      <Button id="menu-departments" type="button" variant="ghost" size="sm">
-        Zümreler
-      </Button>
-      <Button
-        id="arrange-side"
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => arrange("side-by-side")}
-      >
-        Yan Yana
-      </Button>
-      <Button
-        id="arrange-grid"
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => arrange("grid")}
-      >
-        Izgara
-      </Button>
-      <Button
-        id="arrange-cascade"
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => arrange("cascade")}
-      >
-        Kademeli
-      </Button>
-      <Button
-        id="menu-view"
-        type="button"
-        variant="ghost"
-        size="sm"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        Görünüm
-      </Button>
-      <ActiveVoiceMenuPill />
-      <LessonBellBadge />
-      <Button
-        id="spotlight"
-        type="button"
-        variant="tonal"
-        size="sm"
-        onClick={() => window.dispatchEvent(new Event("dijios-spotlight"))}
-      >
-        ⌘K
-      </Button>
-      <Switch id="smartboard" label="Akıllı Tahta" value={smartboard} onChange={setSmartboard} />
-      <time>{clock}</time>
-      <Button id="logout" type="button" variant="outlined" size="sm" onClick={() => void logout()}>
-        Çıkış
-      </Button>
+    <header className="osgl-menubar">
+      <div className="osgl-menu-left">
+        <span className="osgl-brand">
+          <span className="osgl-logo">d</span>
+          <strong>dijiOS Connect</strong>
+        </span>
+        <span className="osgl-school-pill">{institution}</span>
+        <i className="osgl-rule" />
+        <MenuButton id="menu-rooms" label="Odalar" />
+        <MenuButton id="menu-departments" label="Zümreler" />
+        <MenuButton id="arrange-side" label="Yan Yana" onClick={() => arrange("side-by-side")} />
+        <MenuButton id="arrange-grid" label="Izgara" onClick={() => arrange("grid")} />
+        <MenuButton id="arrange-cascade" label="Kademeli" onClick={() => arrange("cascade")} />
+        <MenuButton
+          id="menu-view"
+          label="Görünüm"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        />
+      </div>
+      <div className="osgl-menu-right">
+        <ActiveVoiceMenuPill />
+        <LessonBellBadge />
+        <button
+          id="spotlight"
+          className="osgl-spotlight"
+          type="button"
+          onClick={() => window.dispatchEvent(new Event("dijios-spotlight"))}
+        >
+          <GoogleIcon name="search" size="sm" />
+          Ara...
+          <kbd>⌘K</kbd>
+        </button>
+        <Switch
+          id="smartboard"
+          label="Tahta"
+          size="sm"
+          value={smartboard}
+          onChange={setSmartboard}
+        />
+        <time className="osgl-clock">{clock}</time>
+        <button id="logout" className="osgl-logout" type="button" onClick={() => void logout()}>
+          <Avatar shape="squircle" size="xs" name={fullName} />
+          Çıkış
+        </button>
+      </div>
     </header>
   );
 }

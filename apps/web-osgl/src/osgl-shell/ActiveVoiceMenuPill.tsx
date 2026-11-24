@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
-import { Badge } from "truncgil-uxigl";
-
-export function useActiveVoiceRoom(now = Date.now()): { readonly label: string } {
-  const startedAt = now - 4 * 60 * 1000 - 12 * 1000;
-  const elapsed = Math.max(0, Math.floor((now - startedAt) / 1000));
-  const minutes = String(Math.floor(elapsed / 60)).padStart(2, "0");
-  const seconds = String(elapsed % 60).padStart(2, "0");
-  return { label: `Matematik Zümresi · ${minutes}:${seconds}` };
-}
+import { GoogleIcon } from "truncgil-uxigl";
+import { useActiveVoiceRoom } from "./voice-clock.js";
 
 export function ActiveVoiceMenuPill(): React.JSX.Element {
   const [now, setNow] = useState(() => Date.now());
@@ -17,8 +10,11 @@ export function ActiveVoiceMenuPill(): React.JSX.Element {
   }, []);
   const voice = useActiveVoiceRoom(now);
   return (
-    <Badge id="active-voice" tone="success" pulse pill>
-      {voice.label}
-    </Badge>
+    <span id="active-voice" className="osgl-voice-pill">
+      <i className="osgl-pulse-dot" />
+      <GoogleIcon name="graphic_eq" size="sm" />
+      <span>Matematik Zümresi</span>
+      <span className="osgl-voice-time">{voice.elapsed}</span>
+    </span>
   );
 }

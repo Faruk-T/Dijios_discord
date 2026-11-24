@@ -1,0 +1,201 @@
+.osgl-desktop {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #002147;
+}
+
+.osgl-wallpaper,
+.osgl-wallpaper canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.osgl-menubar {
+  position: relative;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 16px;
+  color: #f8fafc;
+  background: var(--uxu-liquid-regular-bg, rgba(8, 22, 44, 0.62));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(32px) saturate(180%);
+}
+
+.osgl-menu-left,
+.osgl-menu-right,
+.osgl-brand {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.osgl-menu-right {
+  gap: 10px;
+}
+
+.osgl-logo {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 760;
+  background: linear-gradient(145deg, #457b9d, #002147);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.osgl-brand strong {
+  font-size: 13px;
+  letter-spacing: -0.02em;
+}
+
+.osgl-school-pill {
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 650;
+  background: color-mix(in srgb, var(--djs-primary, #457b9d) 28%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+}
+
+.osgl-rule {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.osgl-menu-button {
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 13px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+}
+
+.osgl-menu-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.osgl-voice-pill,
+.osgl-bell,
+.osgl-spotlight {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+}
+
+.osgl-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 999px;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: osgl-pulse 1.6s infinite;
+}
+
+.osgl-voice-time,
+.osgl-clock {
+  font-family: "JetBrains Mono Variable", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.osgl-bell {
+  color: #f8d48a;
+}
+
+.osgl-spotlight kbd {
+  padding: 1px 5px;
+  font-family: inherit;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+}
+
+.osgl-logout {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 8px 0 4px;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.osgl-shortcuts {
+  position: absolute;
+  top: 64px;
+  left: 20px;
+  z-index: 5;
+  display: grid;
+  gap: 16px;
+  width: 92px;
+}
+
+.osgl-shortcut {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  padding: 0;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  background: transparent;
+  border: 0;
+}
+
+.osgl-shortcut-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px);
+}
+
+.osgl-shortcut span {
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+@keyframes osgl-pulse {
+  70% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+html[data-reduced-motion="true"] .osgl-pulse-dot,
+html[data-webgl="false"] .osgl-pulse-dot {
+  animation: none;
+}
+
+html[data-webgl="false"] .osgl-menubar,
+html[data-reduced-motion="true"] .osgl-menubar {
+  background: #10243f;
+  backdrop-filter: none;
+}

@@ -1,3 +1,5 @@
+import { GoogleIcon } from "truncgil-uxigl";
+
 export interface LessonBell {
   readonly label: string;
 }
@@ -11,7 +13,8 @@ export function lessonBell(now: Date): LessonBell {
 export function LessonBellBadge(): React.JSX.Element {
   const bell = lessonBell(new Date());
   return (
-    <span className="osgl-hit" aria-label="Ders zili">
+    <span className="osgl-bell" aria-label="Ders zili">
+      <GoogleIcon name="notifications_active" size="sm" />
       {bell.label}
     </span>
   );
