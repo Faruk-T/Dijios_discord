@@ -1,0 +1,24 @@
+model VoiceSession {
+  id              String                @id @db.Uuid
+  publicId        String                @unique
+  institutionId   String                @db.Uuid
+  channelId       String                @db.Uuid
+  livekitRoomName String
+  startedAt       DateTime              @default(now())
+  endedAt         DateTime?
+  participants    VoiceParticipantLog[]
+
+  @@index([institutionId, channelId])
+}
+
+model VoiceParticipantLog {
+  id        String       @id @db.Uuid
+  sessionId String       @db.Uuid
+  userId    String       @db.Uuid
+  identity  String
+  joinedAt  DateTime     @default(now())
+  leftAt    DateTime?
+  session   VoiceSession @relation(fields: [sessionId], references: [id])
+
+  @@index([sessionId, userId])
+}
