@@ -1,0 +1,63 @@
+---
+description: dijiOS Connect engineering constitution — SOLID, 300-line cap, atomic commits, osGL/HIG, SEO/GEO
+alwaysApply: true
+---
+
+# dijiOS Connect Engineering Constitution
+
+`implementation_plan.md` is the single source of truth. Do not leave its architecture, technology choices, or directory layout. Product: dijiOS Connect, the realtime voice, video, screen-share, and text layer of `app.dijios.com`.
+
+## 1. Maximum 300 physical lines
+
+No source, config, schema, or style file (`.ts`, `.tsx`, `.js`, `.mjs`, `.cjs`, `.css`, `.prisma`, `.rs`, `.astro`) may exceed **300 physical lines**, including blanks and comments. One 301-line file fails the task.
+
+- Target **60–200** lines. Split any file approaching **240**.
+- Split by responsibility: `*.contracts.ts`, `*.schema.ts`, `*.service.ts`, `*.repository.ts`, `*.store.ts`, `use*.ts`, `*View.tsx`.
+- Gates: ESLint `max-lines` 300 (no skipped blanks or comments), `scripts/check-file-lines.mjs` (warn above 240, error above 300), Husky, and CI.
+
+## 2. Atomic commits
+
+Never land a phase as one commit (`feat: complete phase 0`). Each commit is one logical unit, compiles on its own (`typecheck`, `lint`, `check:lines`), and is `git revert`-safe.
+
+Separate dependency installs (`chore(deps)`), workspace setup (`chore(monorepo)`), quality gates (`chore(quality)`), contracts (`arch(contracts)`), infrastructure (`chore(infra)`), and CI (`ci(actions)`).
+
+Conventional Commits, subject max 72 characters, with the GitHub issue:
+
+```text
+<type>(<scope>): <imperative summary> (#issue)
+```
+
+Types: `feat`, `fix`, `arch`, `refactor`, `test`, `docs`, `chore`, `ci`, `perf`. If the subject needs "and" for two changes, split the commit. Keep a commit to about 1–6 files. Do not mix dependency bumps with feature logic. Branch per issue: `<type>/issue-<no>-<slug>`.
+
+## 3. SOLID, Clean Architecture, zero `any`
+
+- **SRP:** `*View.tsx` / `*Tile.tsx` only render `truncgil-uxigl` atoms. No `fetch`, `socket.emit`, or `localStorage` in views. Rules live in domain services, data in repositories, realtime sync in stores/hooks.
+- **OCP:** `osGL` windows (`WindowAppDescriptor`), message embeds, and notification channels extend via registries. Do not edit the core for a new plugin.
+- **LSP:** `DijiosSanctumAuthAdapter` and `MockSchoolAuthAdapter` honor `AuthProviderPort`. `LiveKitTransportAdapter` and `SimulatedMediaAdapter` honor `MediaTransportPort`.
+- **ISP:** No god interfaces. Compose small contracts in `@dijios-connect/contracts` (`IdentifiableEntity`, `TenantScoped`, `AuthorSummary`, `VoiceStateFlags`, `ChannelPermissionFlags`).
+- **DIP:** Nest modules depend on symbol ports (`USER_REPOSITORY_PORT`, `MEDIA_TOKEN_PORT`, `DIJIOS_SYNC_PORT`), not concrete Prisma or LiveKit classes. UI features consume ports injected through context.
+- **Types:** `strict`, `noImplicitAny`, `noUncheckedIndexedAccess`, and `exactOptionalPropertyTypes` stay on. `any`, `as unknown as X`, and `@ts-ignore` are forbidden.
+
+## 4. Design system
+
+UI libraries such as MUI, Ant Design, Chakra, and Bootstrap are forbidden. Build on `truncgil-uxigl` `^2.9.7` and `osGL`.
+
+Apple HIG:
+
+- Floating layers (`TopMenuBar`, `Dock`, `CommandPalette`, PiP) use Liquid Glass (`--uxu-liquid-regular-bg`). Content uses `ultraThin`, `thin`, `regular`, or `thick`. Never stack transparent glass on glass; inner cards use tonal or elevated surfaces.
+- 8pt grid, squircle corners, 44×44pt hit targets, `prefers-reduced-motion` (`data-reduced-motion`, static fallback when WebGL is off).
+
+`app.dijios.com` alignment:
+
+- Seeds: `#002147` Oxford Navy, `#1D3557` Prussian Navy, `#457B9D` Steel Cerulean.
+- No font CDN. Ship Inter Variable, Plus Jakarta Sans Variable, and JetBrains Mono Variable locally.
+- Internal PK `UUIDv7`, external `public_id` ULID, tenant key `institution_id` UUIDv7.
+- API errors are RFC 7807 `application/problem+json`.
+
+## 5. SEO and GEO
+
+Public landing earns classic SEO and GEO (`/llms.txt`, `/llms-full.txt`, Schema.org JSON-LD) for ChatGPT, Gemini, Perplexity, and Claude. Institution workspaces stay `noindex, nofollow` and are disallowed to crawlers.
+
+## 6. Stack lock
+
+pnpm workspaces, Turborepo, React 19, Vite 6, TypeScript 5.7, Astro 5, NestJS 11 on Fastify, Socket.IO, PostgreSQL 17, Prisma, Redis 7, self-hosted LiveKit, MinIO, Zustand, TanStack Query v5. Shared packages: `@dijios-connect/contracts`, `@dijios-connect/ui-osgl`, `@dijios-connect/config`.
