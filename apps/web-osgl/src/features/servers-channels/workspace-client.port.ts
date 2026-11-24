@@ -1,4 +1,6 @@
 import type {
+  ChannelType,
+  ChannelWithOccupants,
   PresenceStatus,
   PresenceUpdatedPayload,
   TeacherRosterEntry,
@@ -11,8 +13,15 @@ export interface WorkspaceSnapshot {
   readonly roster: readonly TeacherRosterEntry[];
 }
 
+export interface CreateChannelInput {
+  readonly name: string;
+  readonly type: ChannelType;
+  readonly categoryId: string;
+}
+
 export interface WorkspaceClientPort {
   load(session: ClientSession): Promise<WorkspaceSnapshot>;
+  createChannel(session: ClientSession, input: CreateChannelInput): Promise<ChannelWithOccupants>;
   setPresence(session: ClientSession, status: PresenceStatus): Promise<void>;
   subscribe(
     session: ClientSession,

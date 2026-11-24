@@ -6,7 +6,7 @@ import type {
 } from "@dijios-connect/contracts";
 import type { ClientSession } from "../auth/auth-client.port.js";
 import { createWorkspaceClient } from "./http-workspace.client.js";
-import type { WorkspaceClientPort } from "./workspace-client.port.js";
+import type { CreateChannelInput, WorkspaceClientPort } from "./workspace-client.port.js";
 
 export type ChannelFilter = "all" | "branch" | "voice" | "announcements";
 
@@ -21,7 +21,10 @@ export interface WorkspaceState {
   readonly muted: boolean;
   readonly deafened: boolean;
   readonly status: PresenceStatus;
+  readonly createOpen: boolean;
   load: (session: ClientSession) => Promise<void>;
+  setCreateOpen: (open: boolean) => void;
+  createChannel: (session: ClientSession, input: CreateChannelInput) => Promise<void>;
   selectChannel: (channelId: string) => void;
   setFilter: (filter: ChannelFilter) => void;
   toggleRoster: () => void;
@@ -44,6 +47,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   muted: false,
   deafened: false,
   status: "ONLINE",
+  createOpen: false,
   load: async (session) => {
     stopPresence?.();
     const snapshot = await get().client.load(session);
@@ -62,6 +66,26 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       roster: snapshot.roster,
       activeChannelId: first,
       profileUserId: null,
+    });
+  },
+  setCreateOpen: (createOpen) => set({ createOpen }),
+  createChannel: async (session, input) => {
+    const channel = await get().client.createChannel(session, input);
+    const tree = get().tree;
+    if (tree === null || channel.categoryId === null) {
+      return;
+    }
+    set({
+      createOpen: false,
+      activeChannelId: channel.id,
+      tree: {
+        ...tree,
+        categories: tree.categories.map((category) =>
+          category.id === channel.categoryId
+            ? { ...category, channels: [...category.channels, channel] }
+            : category,
+        ),
+      },
     });
   },
   selectChannel: (activeChannelId) => set({ activeChannelId }),

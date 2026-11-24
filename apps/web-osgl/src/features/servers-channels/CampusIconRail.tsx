@@ -1,6 +1,10 @@
 import type { JSX } from "react";
 import { GoogleIcon } from "truncgil-uxigl";
+import { useAuthStore } from "../auth/auth.store.js";
+import { CreateChannelModal } from "./CreateChannelModal.js";
 import { useWorkspaceStore, type ChannelFilter } from "./workspace.store.js";
+
+const CREATORS = new Set(["FOUNDER", "PRINCIPAL", "DEPT_HEAD"]);
 
 const FILTERS: readonly {
   readonly id: ChannelFilter;
@@ -16,6 +20,8 @@ const FILTERS: readonly {
 export function CampusIconRail(): JSX.Element {
   const filter = useWorkspaceStore((state) => state.filter);
   const setFilter = useWorkspaceStore((state) => state.setFilter);
+  const setCreateOpen = useWorkspaceStore((state) => state.setCreateOpen);
+  const canCreate = CREATORS.has(useAuthStore((state) => state.session?.systemRole ?? ""));
   return (
     <aside className="hub-rail" aria-label="Kampüs rayı">
       <span className="hub-emblem" title="Örnek Fen Koleji">
@@ -33,9 +39,17 @@ export function CampusIconRail(): JSX.Element {
           <GoogleIcon name={item.icon} />
         </button>
       ))}
-      <button className="hub-plus" type="button" aria-label="Yeni kanal" title="Yeni kanal">
+      <button
+        className="hub-plus"
+        type="button"
+        aria-label="Yeni kanal"
+        title="Yeni kanal"
+        disabled={!canCreate}
+        onClick={() => setCreateOpen(true)}
+      >
         <GoogleIcon name="add" />
       </button>
+      <CreateChannelModal />
     </aside>
   );
 }

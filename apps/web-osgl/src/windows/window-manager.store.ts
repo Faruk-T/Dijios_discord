@@ -34,7 +34,7 @@ interface WindowManagerState {
 const BASE_WINDOW_Z = 20;
 
 const VIEWPORT = (): Viewport => ({
-  width: typeof window === "undefined" ? 1280 : window.innerWidth,
+  width: typeof window === "undefined" ? 1248 : Math.max(360, window.innerWidth - 32),
   height: typeof window === "undefined" ? 720 : Math.max(320, window.innerHeight - 120),
   top: 52,
   left: 16,

@@ -1,4 +1,5 @@
 import type {
+  ChannelWithOccupants,
   PresenceStatus,
   PresenceUpdatedPayload,
   TeacherRosterEntry,
@@ -7,7 +8,11 @@ import type {
 import { io } from "socket.io-client";
 import type { ClientSession } from "../auth/auth-client.port.js";
 import { SimulatedWorkspaceClient } from "./simulated-workspace.client.js";
-import type { WorkspaceClientPort, WorkspaceSnapshot } from "./workspace-client.port.js";
+import type {
+  CreateChannelInput,
+  WorkspaceClientPort,
+  WorkspaceSnapshot,
+} from "./workspace-client.port.js";
 
 export class HttpWorkspaceClient implements WorkspaceClientPort {
   constructor(private readonly baseUrl: string) {}
@@ -21,6 +26,32 @@ export class HttpWorkspaceClient implements WorkspaceClientPort {
       throw new Error("Workspace payload is invalid.");
     }
     return { tree, roster: roster as readonly TeacherRosterEntry[] };
+  }
+
+  async createChannel(
+    session: ClientSession,
+    input: CreateChannelInput,
+  ): Promise<ChannelWithOccupants> {
+    const slug = input.name
+      .toLocaleLowerCase("tr-TR")
+      .replace(/[^a-z0-9]+/gi, "-")
+      .replace(/^-|-$/g, "");
+    const response = await fetch(`${this.baseUrl}/api/v1/workspaces/current/channels`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        authorization: `Bearer ${session.accessToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: input.name,
+        slug: slug.length > 0 ? slug : "kanal",
+        type: input.type,
+        categoryId: input.categoryId,
+        branchName: session.branchName,
+      }),
+    });
+    return response.json() as Promise<ChannelWithOccupants>;
   }
 
   async setPresence(session: ClientSession, status: PresenceStatus): Promise<void> {

@@ -171,6 +171,20 @@
   color: #fff;
 }
 
+.hub-modal {
+  display: grid;
+  gap: 12px;
+}
+
+.hub-modal select,
+.hub-modal button {
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid #d5deea;
+  background: #fff;
+  color: #0b1d36;
+}
+
 @media (max-width: 980px) {
   .hub,
   .hub.is-roster-closed {
