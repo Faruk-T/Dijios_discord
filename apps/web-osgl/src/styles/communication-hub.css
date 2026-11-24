@@ -13,7 +13,6 @@
 
 .hub-rail,
 .hub-tree,
-.hub-stage,
 .hub-roster {
   min-width: 0;
   min-height: 0;
@@ -118,6 +117,9 @@
 .hub-stage {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
   background: #163154;
 }
 

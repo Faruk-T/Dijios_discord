@@ -1,4 +1,5 @@
 import type { JSX } from "react";
+import { Avatar } from "truncgil-uxigl";
 import type { ChatMessage } from "./messaging-client.port.js";
 import { useMessagingStore } from "./messaging.store.js";
 
@@ -16,7 +17,7 @@ export function MessageBubbleRow({
   const openThread = useMessagingStore((state) => state.openThread);
   return (
     <article className="msg-row">
-      <span className="msg-avatar">{message.authorName.slice(0, 2)}</span>
+      <Avatar shape="squircle" size="sm" name={message.authorName} status="online" />
       <div>
         <header>
           <strong>{message.authorName}</strong>

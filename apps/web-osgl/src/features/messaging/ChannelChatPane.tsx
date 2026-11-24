@@ -25,13 +25,15 @@ export function ChannelChatPane({
   useSmartNotifications(messages);
   return (
     <div className="msg-pane">
-      <div className="msg-stream">
-        {pins.length > 0 ? <div className="msg-pins">Sabitlenenler: {pins.length}</div> : null}
-        {messages
-          .filter((item) => item.parentId === null)
-          .map((message) => (
-            <MessageBubbleRow key={message.id} message={message} channelId={channel.id} />
-          ))}
+      <div className="msg-chat-col">
+        <div className="msg-stream">
+          {pins.length > 0 ? <div className="msg-pins">Sabitlenenler: {pins.length}</div> : null}
+          {messages
+            .filter((item) => item.parentId === null)
+            .map((message) => (
+              <MessageBubbleRow key={message.id} message={message} channelId={channel.id} />
+            ))}
+        </div>
         <TypingIndicatorBar />
         {channel.permissions.canSendMessages ? (
           <RichMessageComposer
