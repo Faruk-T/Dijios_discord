@@ -16,8 +16,18 @@ export async function openMediaTransport(input: MediaConnectInput): Promise<Conn
     return openSimulated(input);
   }
   const live = new LiveKitTransportAdapter();
+  let granted: Awaited<ReturnType<LiveKitTransportAdapter["prepare"]>>;
   try {
-    const snapshot = await Promise.race([live.connect(input), rejectAfter(250)]);
+    granted = await live.prepare(input);
+  } catch (error: unknown) {
+    if (error instanceof TypeError) {
+      return openSimulated(input);
+    }
+    await live.disconnect();
+    return openSimulated(input);
+  }
+  try {
+    const snapshot = await Promise.race([live.joinPrepared(input, granted), rejectAfter(1800)]);
     return { transport: live, snapshot };
   } catch {
     await live.disconnect();

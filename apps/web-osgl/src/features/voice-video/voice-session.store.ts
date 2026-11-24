@@ -31,6 +31,12 @@ export interface VoiceSessionState {
 }
 
 let transport: MediaTransportPort | null = null;
+let unsubscribe: (() => void) | null = null;
+
+function dropSubscription(): void {
+  unsubscribe?.();
+  unsubscribe = null;
+}
 
 const idle = {
   connectedChannelId: null,
@@ -51,10 +57,11 @@ const idle = {
 export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
   ...idle,
   joinChannel: async (channelId, channelName, displayName) => {
+    dropSubscription();
     await transport?.disconnect();
     const opened = await openMediaTransport({ channelId, channelName, displayName });
     transport = opened.transport;
-    transport.subscribe((snapshot) => set({ participants: snapshot.participants }));
+    unsubscribe = transport.subscribe((snapshot) => set({ participants: snapshot.participants }));
     transport.setNoiseSuppression(get().noiseSuppression);
     set({
       connectedChannelId: channelId,
@@ -66,6 +73,7 @@ export const useVoiceSessionStore = create<VoiceSessionState>((set, get) => ({
     });
   },
   leave: async () => {
+    dropSubscription();
     await transport?.disconnect();
     transport = null;
     set({ ...idle, pttEnabled: get().pttEnabled, pttCode: get().pttCode });
