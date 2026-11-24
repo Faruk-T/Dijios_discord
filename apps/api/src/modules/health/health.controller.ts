@@ -1,7 +1,9 @@
 import { Controller, Get, Inject, Query } from "@nestjs/common";
+import { Public } from "../../common/auth/public.decorator.js";
 import { ValidationDomainException } from "../../common/errors/domain.exception.js";
 import { EnvService } from "../../config/env.service.js";
 
+@Public()
 @Controller()
 export class HealthController {
   constructor(@Inject(EnvService) private readonly env: EnvService) {}

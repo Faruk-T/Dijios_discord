@@ -2,6 +2,9 @@ import { type AuthTokensResponse, type MockPersonaSummary } from "@dijios-connec
 import { Body, Controller, Get, Inject, Post, Req, Res } from "@nestjs/common";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
+import { Public } from "../../common/auth/public.decorator.js";
+import { CurrentUser } from "../../common/decorators/current-user.decorator.js";
+import type { AuthContext } from "../../common/auth/auth-context.js";
 import {
   UnauthorizedDomainException,
   ValidationDomainException,
@@ -42,6 +45,7 @@ export class AuthController {
     @Inject(EnvService) private readonly env: EnvService,
   ) {}
 
+  @Public()
   @Post("login")
   async login(
     @Body() body: unknown,
@@ -51,6 +55,7 @@ export class AuthController {
     return this.respond(reply, teacher);
   }
 
+  @Public()
   @Post("dijios-exchange")
   async exchange(
     @Body() body: unknown,
@@ -60,6 +65,7 @@ export class AuthController {
     return this.respond(reply, teacher);
   }
 
+  @Public()
   @Post("refresh")
   refresh(
     @Req() request: FastifyRequest,
@@ -91,18 +97,29 @@ export class AuthController {
     });
   }
 
+  @Public()
   @Post("logout")
   logout(@Res({ passthrough: true }) reply: FastifyReply): { readonly status: "ok" } {
     reply.clearCookie(REFRESH_COOKIE, this.tokens.refreshCookieOptions());
     return { status: "ok" };
   }
 
+  @Public()
   @Get("personas")
   personas(): readonly MockPersonaSummary[] {
     if (this.env.authMode !== "mock") {
       throw new UnauthorizedDomainException("Personas are available only in mock mode.");
     }
     return this.auth.listDevPersonas();
+  }
+
+  @Get("me")
+  me(@CurrentUser() user: AuthContext): AuthContext & { readonly fullName: string } {
+    const teacher = SEED_TEACHERS.find((item) => item.id === user.userId);
+    return {
+      ...user,
+      fullName: teacher?.fullName ?? user.userId,
+    };
   }
 
   private respond(
