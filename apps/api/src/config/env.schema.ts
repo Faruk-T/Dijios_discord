@@ -9,6 +9,7 @@ export const envSchema = z.object({
   DIJIOS_API_BASE_URL: z.url(),
   DATABASE_URL: z.string().min(1),
   REDIS_URL: z.string().min(1),
+  REDIS_ADAPTER_ENABLED: z.string().default("false"),
   CORS_ORIGIN: z.string().min(1).default("http://localhost:5173"),
 });
 

@@ -5,6 +5,7 @@ import { FastifyAdapter, type NestFastifyApplication } from "@nestjs/platform-fa
 import { AppModule } from "./app.module.js";
 import { ProblemDetailsFilter } from "./common/filters/problem-details.filter.js";
 import { EnvService } from "./config/env.service.js";
+import { RedisIoAdapter } from "./modules/realtime/redis-io.config.js";
 
 export async function createApp(): Promise<NestFastifyApplication> {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
@@ -13,6 +14,9 @@ export async function createApp(): Promise<NestFastifyApplication> {
   app.setGlobalPrefix("api/v1");
   app.useGlobalFilters(new ProblemDetailsFilter());
   const env = app.get(EnvService);
+  app.useWebSocketAdapter(
+    new RedisIoAdapter(app, env.config.REDIS_ADAPTER_ENABLED === "true", env.config.REDIS_URL),
+  );
   app.enableCors({ origin: env.config.CORS_ORIGIN, credentials: true });
   await app.register(cookie, { secret: env.config.JWT_REFRESH_SECRET });
   await app.init();

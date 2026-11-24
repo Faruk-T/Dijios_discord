@@ -8,6 +8,7 @@ import { AuthModule } from "./modules/auth/auth.module.js";
 import { HealthModule } from "./modules/health/health.module.js";
 import { InstitutionsModule } from "./modules/institutions/institutions.module.js";
 import { RbacModule } from "./modules/rbac/rbac.module.js";
+import { RealtimeModule } from "./modules/realtime/realtime.module.js";
 import { WorkspacesModule } from "./modules/workspaces/workspaces.module.js";
 
 @Module({
@@ -19,6 +20,7 @@ import { WorkspacesModule } from "./modules/workspaces/workspaces.module.js";
     InstitutionsModule,
     RbacModule,
     WorkspacesModule,
+    RealtimeModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
