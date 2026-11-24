@@ -1,8 +1,10 @@
+import type { PresenceUpdatedPayload } from "@dijios-connect/contracts";
 import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { io, type Socket } from "socket.io-client";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { FEN_INSTITUTION_ID } from "../../../prisma/seed-data.js";
 import { createApp } from "../../app.factory.js";
+import { parseUuidV7 } from "../../common/ids/id-generator.js";
 import { WorkspaceGateway } from "./workspace.gateway.js";
 
 async function login(app: NestFastifyApplication): Promise<string> {
@@ -78,10 +80,10 @@ describe("workspace gateway", () => {
       .get(WorkspaceGateway)
       .server.to(`institution:${FEN_INSTITUTION_ID}`)
       .emit("presence:updated", {
-        userId: "018f0000-0000-7000-8000-000000000003",
+        userId: parseUuidV7("018f0000-0000-7000-8000-000000000003"),
         status: "ONLINE",
         currentLesson: null,
-        observedAt: "2026-11-24T09:00:00.000Z",
+        observedAt: "2026-11-24T09:00:00.000Z" as PresenceUpdatedPayload["observedAt"],
       });
     await expect(heard).resolves.toMatchObject({ status: "ONLINE" });
   });
