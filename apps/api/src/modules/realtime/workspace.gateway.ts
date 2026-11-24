@@ -4,7 +4,7 @@ import type {
   ServerToClientEvents,
 } from "@dijios-connect/contracts";
 import { Inject, Injectable } from "@nestjs/common";
-import type { OnGatewayConnection } from "@nestjs/websockets";
+import type { OnGatewayConnection, OnGatewayDisconnect } from "@nestjs/websockets";
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import type { Server, Socket } from "socket.io";
 import { TokenService } from "../auth/token.service.js";
@@ -20,7 +20,7 @@ interface SocketSession {
 
 @Injectable()
 @WebSocketGateway({ cors: { origin: true, credentials: true } })
-export class WorkspaceGateway implements OnGatewayConnection {
+export class WorkspaceGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   readonly server!: Server<ClientToServerEvents, ServerToClientEvents>;
 
@@ -38,6 +38,10 @@ export class WorkspaceGateway implements OnGatewayConnection {
         this.server.to(`institution:${institutionId}`).emit("voice:room_state_updated", payload);
       },
     });
+  }
+
+  handleDisconnect(client: ConnectSocket): void {
+    this.sessions.delete(client.id);
   }
 
   handleConnection(client: ConnectSocket): void {
