@@ -1,0 +1,48 @@
+model Workspace {
+  id            String            @id @db.Uuid
+  publicId      String            @unique
+  institutionId String            @unique @db.Uuid
+  name          String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  categories    ChannelCategory[]
+  channels      Channel[]
+}
+
+model ChannelCategory {
+  id          String    @id @db.Uuid
+  publicId    String    @unique
+  workspaceId String    @db.Uuid
+  name        String
+  position    Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  channels    Channel[]
+
+  @@index([workspaceId])
+}
+
+model Channel {
+  id                String           @id @db.Uuid
+  publicId          String           @unique
+  institutionId     String           @db.Uuid
+  workspaceId       String           @db.Uuid
+  categoryId        String?          @db.Uuid
+  slug              String
+  name              String
+  topic             String?
+  type              String
+  branchName        String?
+  isPrivate         Boolean          @default(false)
+  isPdrConfidential Boolean          @default(false)
+  maxParticipants   Int?
+  position          Int
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  workspace         Workspace        @relation(fields: [workspaceId], references: [id])
+  category          ChannelCategory? @relation(fields: [categoryId], references: [id])
+
+  @@unique([institutionId, slug])
+  @@index([institutionId])
+}
