@@ -59,3 +59,11 @@ export type {
   VoiceRoomStatePayload,
   VoiceStateFlags,
 } from "./realtime-events.contracts.js";
+
+export type {
+  AuthTokenClaims,
+  AuthTokensResponse,
+  DijiosExchangeRequestDto,
+  LoginRequestDto,
+  MockPersonaSummary,
+} from "./auth.contracts.js";
