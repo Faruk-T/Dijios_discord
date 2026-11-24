@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { JSX } from "react";
 import { Button } from "truncgil-uxigl";
+import { ShellWindowBody } from "../windows/FloatingWindowFrame.js";
 import { windowRegistry } from "../windows/window-registry.js";
 import { useWindowManager } from "../windows/window-manager.store.js";
 
@@ -28,7 +29,9 @@ export function MobileCompactShell(): JSX.Element {
         ))}
       </div>
       <section className="osgl-content-surface">
-        {descriptor === null ? null : descriptor.render()}
+        {descriptor === null ? null : (
+          <ShellWindowBody key={descriptor.appId} render={descriptor.render} />
+        )}
       </section>
     </main>
   );

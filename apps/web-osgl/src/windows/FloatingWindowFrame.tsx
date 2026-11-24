@@ -72,6 +72,10 @@ function WindowChrome({ item }: { readonly item: ManagedWindow }): JSX.Element {
   );
 }
 
+export function ShellWindowBody({ render }: { readonly render: () => JSX.Element }): JSX.Element {
+  return render();
+}
+
 export function FloatingWindowFrame({
   item,
 }: {
@@ -115,7 +119,7 @@ export function FloatingWindowFrame({
     >
       <WindowChrome item={item} />
       <div className={descriptor.fullBleed ? "osgl-window-body is-bleed" : "osgl-window-body"}>
-        {descriptor.render()}
+        <ShellWindowBody render={descriptor.render} />
       </div>
       <button
         className="osgl-resize"
