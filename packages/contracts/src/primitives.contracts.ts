@@ -21,8 +21,8 @@ export interface TenantScoped {
 
 export interface TenantScopedEntity extends IdentifiableEntity, TenantScoped {}
 
-export interface CursorPaginatedResult<TItem> {
+export interface CursorPaginatedResult<TItem, TCursor = UuidV7 | Ulid | string> {
   readonly items: readonly TItem[];
-  readonly nextCursor: Ulid | null;
+  readonly nextCursor: TCursor | null;
   readonly hasMore: boolean;
 }

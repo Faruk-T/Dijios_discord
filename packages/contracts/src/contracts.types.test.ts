@@ -3,8 +3,11 @@ import type {
   AuthenticatedSession,
   ClientToServerEvents,
   CursorPaginatedResult,
+  MessageDeletedPayload,
   ProblemCode,
   ServerToClientEvents,
+  Ulid,
+  UuidV7,
 } from "./index.js";
 import { CHANNEL_TYPES } from "./workspace-channel.contracts.js";
 import { PRESENCE_STATUSES } from "./tenant-auth.contracts.js";
@@ -38,7 +41,13 @@ describe("problem and presence vocabularies", () => {
 describe("shared contract shapes", () => {
   it("types sessions, pages, and socket handlers", () => {
     expectTypeOf<AuthenticatedSession>().toHaveProperty("institution");
-    expectTypeOf<CursorPaginatedResult<AuthenticatedSession>>().toHaveProperty("nextCursor");
+    expectTypeOf<CursorPaginatedResult<AuthenticatedSession>["nextCursor"]>().toEqualTypeOf<
+      UuidV7 | Ulid | string | null
+    >();
+    expectTypeOf<CursorPaginatedResult<AuthenticatedSession, string>["nextCursor"]>().toEqualTypeOf<
+      string | null
+    >();
+    expectTypeOf<MessageDeletedPayload["messageId"]>().toEqualTypeOf<UuidV7>();
     expectTypeOf<ClientToServerEvents["chat:message_send"]>().toBeFunction();
     expectTypeOf<ClientToServerEvents["voice:hand_raise"]>().toBeFunction();
     expectTypeOf<ServerToClientEvents["voice:room_state_updated"]>().toBeFunction();

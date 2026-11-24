@@ -53,6 +53,7 @@ export type {
   PresenceUpdatedPayload,
   ServerToClientEvents,
   TypingBroadcastPayload,
+  MessageDeletedPayload,
   TypingSignalPayload,
   VoiceParticipantSnapshot,
   VoiceRoomStatePayload,
