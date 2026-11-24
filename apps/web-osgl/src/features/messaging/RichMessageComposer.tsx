@@ -1,6 +1,7 @@
 import type { JSX } from "react";
 import { useState } from "react";
 import { assertSafeFile } from "./file-name.policy.js";
+import { ComposerShortcuts } from "./ComposerShortcuts.js";
 import { useMessagingStore } from "./messaging.store.js";
 
 export function RichMessageComposer({
@@ -59,20 +60,12 @@ export function RichMessageComposer({
       <button type="button" onClick={() => setValue((current) => `${current} @Zeynep`.trim())}>
         @
       </button>
-      <button
-        type="button"
-        onClick={() =>
-          void send(
-            channelId,
-            authorName,
-            branch,
-            "📊 11. Sınıflar Matematik Deneme Analiz Matrisi",
-            parentId,
-          )
-        }
-      >
-        📊 Analiz Tablosu Paylaş
-      </button>
+      <ComposerShortcuts
+        channelId={channelId}
+        authorName={authorName}
+        branch={branch}
+        parentId={parentId}
+      />
       <button type="submit">Gönder</button>
       {error.length > 0 ? <p>{error}</p> : null}
     </form>

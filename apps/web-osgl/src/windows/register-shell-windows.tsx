@@ -1,6 +1,7 @@
 import { DepartmentFileManWindow } from "../features/academic-tools/DepartmentFileManWindow.js";
 import { MeetingMinutesWindow } from "../features/academic-tools/MeetingMinutesWindow.js";
 import { SheetGlAnalysisWindow } from "../features/academic-tools/SheetGlAnalysisWindow.js";
+import { Student360QuickWindow } from "../features/academic-tools/Student360QuickWindow.js";
 import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
 import { MediaStudioWindow } from "../features/settings-studio/MediaStudioWindow.js";
 import { VoiceStageWindow } from "../features/voice-video/VoiceStageWindow.js";
@@ -57,6 +58,16 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     minSize: { width: 360, height: 240 },
     fullBleed: true,
     render: SheetGlAnalysisWindow,
+  },
+  {
+    appId: "student-360",
+    title: "dijiOS Öğrenci 360°",
+    category: "Akademik",
+    icon: "school",
+    defaultSize: { width: 680, height: 480 },
+    minSize: { width: 360, height: 240 },
+    fullBleed: false,
+    render: Student360QuickWindow,
   },
   {
     appId: "theme-performance-studio",

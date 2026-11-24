@@ -8,6 +8,7 @@ import { ConnectDock } from "../windows/ConnectDock.js";
 import { FloatingWindowFrame } from "../windows/FloatingWindowFrame.js";
 import { registerShellWindows } from "../windows/register-shell-windows.js";
 import { useWindowManager } from "../windows/window-manager.store.js";
+import { CampusBroadcastBanner } from "../features/academic-tools/CampusBroadcastBanner.js";
 import { AuroraWallpaperCanvas } from "./AuroraWallpaperCanvas.js";
 import { ConnectTopMenuBar } from "./ConnectTopMenuBar.js";
 import { DesktopShortcutGrid } from "./DesktopShortcutGrid.js";
@@ -50,6 +51,7 @@ export function OsglDesktopShell(): JSX.Element {
     <div className="osgl-desktop">
       <AuroraWallpaperCanvas />
       <ConnectTopMenuBar />
+      <CampusBroadcastBanner />
       <DesktopShortcutGrid />
       {windows.map((item) => (
         <FloatingWindowFrame key={item.instanceId} item={item} />

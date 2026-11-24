@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Avatar } from "truncgil-uxigl";
+import { ChannelPollCard } from "../academic-tools/ChannelPollCard.js";
 import { SheetMessageEmbed } from "../academic-tools/SheetMessageEmbed.js";
 import type { ChatMessage } from "./messaging-client.port.js";
 import { useMessagingStore } from "./messaging.store.js";
@@ -29,6 +30,9 @@ export function MessageBubbleRow({
         </header>
         <p>{highlight(message.content)}</p>
         {message.content.startsWith("📊") ? <SheetMessageEmbed title={message.content} /> : null}
+        {message.content.startsWith("🗳️") ? (
+          <ChannelPollCard title={message.content.replace(/^🗳️\s*/, "")} />
+        ) : null}
         {message.attachment !== null ? <div className="msg-file">{message.attachment}</div> : null}
         <div className="msg-reactions">
           {message.reactions.map((item) => (
