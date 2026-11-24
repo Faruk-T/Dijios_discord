@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "truncgil-uxigl/styles";
+import { ConnectApp } from "./app/ConnectApp.js";
 import { AppProviders } from "./app/AppProviders.js";
 import "./styles/fonts.css";
 import "./styles/dijios-hig.css";
@@ -13,7 +14,7 @@ if (root === null) {
 createRoot(root).render(
   <StrictMode>
     <AppProviders>
-      <main className="osgl-desktop">dijiOS Connect</main>
+      <ConnectApp />
     </AppProviders>
   </StrictMode>,
 );
