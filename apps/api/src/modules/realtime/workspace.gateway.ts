@@ -4,12 +4,8 @@ import type {
   ServerToClientEvents,
 } from "@dijios-connect/contracts";
 import { Inject, Injectable } from "@nestjs/common";
-import {
-  OnGatewayConnection,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from "@nestjs/websockets";
+import type { OnGatewayConnection } from "@nestjs/websockets";
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import type { Server, Socket } from "socket.io";
 import { TokenService } from "../auth/token.service.js";
 import { PresenceService } from "./presence.service.js";
