@@ -10,8 +10,17 @@ import {
   ValidationDomainException,
 } from "../../common/errors/domain.exception.js";
 import { EnvService } from "../../config/env.service.js";
-import { SEED_INSTITUTIONS, SEED_TEACHERS } from "../../../prisma/seed-data.js";
-import { AUTH_PROVIDER_PORT, type AuthProviderPort } from "./auth-provider.port.js";
+import {
+  AUTH_PROVIDER_PORT,
+  type AuthenticatedTeacher,
+  type AuthProviderPort,
+} from "./auth-provider.port.js";
+import {
+  SCHOOL_DIRECTORY_PORT,
+  type DirectoryInstitution,
+  type DirectoryTeacher,
+  type SchoolDirectoryPort,
+} from "../directory/school-directory.port.js";
 import { REFRESH_COOKIE, TokenService } from "./token.service.js";
 
 const loginSchema = z.object({
@@ -37,12 +46,33 @@ function parseBody<T>(schema: z.ZodType<T>, body: unknown): T {
   return parsed.data;
 }
 
+function toAuthenticatedTeacher(
+  teacher: DirectoryTeacher,
+  institution: DirectoryInstitution,
+): AuthenticatedTeacher {
+  return {
+    userId: teacher.id,
+    publicId: teacher.publicId,
+    institutionId: institution.id,
+    institutionPublicId: institution.publicId,
+    institutionAlias: institution.alias,
+    institutionName: institution.name,
+    primaryColor: institution.primaryColor,
+    fullName: teacher.fullName,
+    systemRole: teacher.systemRole,
+    branchName: teacher.branchName,
+    title: teacher.title,
+    avatarUrl: teacher.avatarUrl,
+  };
+}
+
 @Controller("auth")
 export class AuthController {
   constructor(
     @Inject(AUTH_PROVIDER_PORT) private readonly auth: AuthProviderPort,
     @Inject(TokenService) private readonly tokens: TokenService,
     @Inject(EnvService) private readonly env: EnvService,
+    @Inject(SCHOOL_DIRECTORY_PORT) private readonly directory: SchoolDirectoryPort,
   ) {}
 
   @Public()
@@ -76,25 +106,12 @@ export class AuthController {
       throw new UnauthorizedDomainException("Refresh cookie is missing.");
     }
     const claims = this.tokens.verifyRefresh(cookie);
-    const teacher = SEED_TEACHERS.find((item) => item.id === claims.sub);
-    const institution = SEED_INSTITUTIONS.find((item) => item.id === claims.institutionId);
-    if (teacher === undefined || institution === undefined) {
+    const teacher = this.directory.findTeacherById(claims.sub);
+    const institution = this.directory.findInstitutionById(claims.institutionId);
+    if (teacher === null || institution === null) {
       throw new UnauthorizedDomainException("Refresh token subject is unknown.");
     }
-    return this.respond(reply, {
-      userId: teacher.id,
-      publicId: teacher.publicId,
-      institutionId: institution.id,
-      institutionPublicId: institution.publicId,
-      institutionAlias: institution.alias,
-      institutionName: institution.name,
-      primaryColor: institution.primaryColor,
-      fullName: teacher.fullName,
-      systemRole: teacher.systemRole,
-      branchName: teacher.branchName,
-      title: teacher.title,
-      avatarUrl: null,
-    });
+    return this.respond(reply, toAuthenticatedTeacher(teacher, institution));
   }
 
   @Public()
@@ -115,17 +132,15 @@ export class AuthController {
 
   @Get("me")
   me(@CurrentUser() user: AuthContext): AuthContext & { readonly fullName: string } {
-    const teacher = SEED_TEACHERS.find((item) => item.id === user.userId);
+    const teacher = this.directory.findTeacherById(user.userId);
     return {
       ...user,
       fullName: teacher?.fullName ?? user.userId,
     };
   }
 
-  private respond(
-    reply: FastifyReply,
-    teacher: Awaited<ReturnType<AuthProviderPort["authenticateCredentials"]>>,
-  ): AuthTokensResponse {
+  private respond(reply: FastifyReply, teacher: AuthenticatedTeacher): AuthTokensResponse {
+    this.directory.upsertAuthenticatedTeacher(teacher);
     const issued = this.tokens.issue(teacher);
     reply.setCookie(REFRESH_COOKIE, issued.refreshToken, this.tokens.refreshCookieOptions());
     return issued.response;
