@@ -1,82 +1,16 @@
 import type {
+  AcademicSystemRole,
   ChannelType,
-  ChannelWithOccupants,
   UuidV7,
   WorkspaceTreeResponse,
 } from "@dijios-connect/contracts";
-import type { AcademicSystemRole } from "@dijios-connect/contracts";
+import { fixtureChannel } from "./workspace-channel.fixtures.js";
 
 function uuid(value: string): UuidV7 {
   return value as UuidV7;
 }
 
 const FEN = uuid("018f0000-0000-7000-8000-000000000001");
-
-function channel(
-  id: string,
-  categoryId: string,
-  slug: string,
-  name: string,
-  type: ChannelType,
-  branchName: string | null,
-  confidential: boolean,
-  position: number,
-): ChannelWithOccupants {
-  const voice = slug === "matematik-zumresi-ses";
-  return {
-    id: uuid(id),
-    publicId: "01JFEN000000000000000000C1" as ChannelWithOccupants["publicId"],
-    institutionId: FEN,
-    categoryId: uuid(categoryId),
-    slug,
-    name,
-    topic: name,
-    type,
-    branchName,
-    isPrivate: confidential,
-    isPdrConfidential: confidential,
-    maxParticipants: type === "TEXT" || type === "ANNOUNCEMENT" ? null : 50,
-    position,
-    permissions: {
-      canView: true,
-      canSendMessages: type !== "ANNOUNCEMENT",
-      canConnectVoice: type === "VOICE" || type === "VIDEO_STAGE",
-      canSpeak: type === "VOICE" || type === "VIDEO_STAGE",
-      canShareScreen: type === "VIDEO_STAGE",
-      canManageChannel: false,
-    },
-    occupants: voice
-      ? [
-          {
-            userId: uuid("018f0000-0000-7000-8000-000000000005"),
-            displayName: "Zeynep Başaran",
-            livekitIdentity: "math.head.fen",
-            speaking: true,
-            flags: {
-              selfMuted: false,
-              selfDeafened: false,
-              cameraEnabled: false,
-              screenSharing: false,
-              handRaised: false,
-            },
-          },
-          {
-            userId: uuid("018f0000-0000-7000-8000-000000000004"),
-            displayName: "Mehmet Müdür",
-            livekitIdentity: "principal.fen",
-            speaking: false,
-            flags: {
-              selfMuted: true,
-              selfDeafened: false,
-              cameraEnabled: false,
-              screenSharing: false,
-              handRaised: false,
-            },
-          },
-        ]
-      : [],
-  };
-}
 
 const GENEL = "018f0000-0000-7000-8000-000000000111";
 const ACADEMIC = "018f0000-0000-7000-8000-000000000112";
@@ -89,7 +23,7 @@ function pack(id: string, name: string, rows: readonly ChannelRow[]) {
     id,
     name,
     channels: rows.map((row, position) =>
-      channel(row[0], row[1], row[2], row[3], row[4], row[5], row[6], position),
+      fixtureChannel(row[0], row[1], row[2], row[3], row[4], row[5], row[6], position),
     ),
   };
 }
@@ -210,31 +144,6 @@ const FIXTURE_CATEGORIES = [
     ],
   ]),
 ];
-
-let createdSequence = 200;
-
-export function createdChannel(
-  categoryId: string,
-  name: string,
-  type: ChannelType,
-  branchName: string | null,
-): ChannelWithOccupants {
-  createdSequence += 1;
-  const slug = name
-    .toLocaleLowerCase("tr-TR")
-    .replace(/[^a-z0-9]+/gi, "-")
-    .replace(/^-|-$/g, "");
-  return channel(
-    `018f0000-0000-7000-8000-${String(createdSequence).padStart(12, "0")}`,
-    categoryId,
-    slug.length > 0 ? slug : "kanal",
-    name,
-    type,
-    branchName,
-    false,
-    createdSequence,
-  );
-}
 
 export function simulatedTree(role: AcademicSystemRole): WorkspaceTreeResponse {
   return {

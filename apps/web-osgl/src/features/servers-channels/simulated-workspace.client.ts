@@ -9,7 +9,8 @@ import type {
   WorkspaceClientPort,
   WorkspaceSnapshot,
 } from "./workspace-client.port.js";
-import { createdChannel, simulatedTree } from "./workspace-fixtures.js";
+import { createdChannel } from "./workspace-channel.fixtures.js";
+import { simulatedTree } from "./workspace-fixtures.js";
 import { simulatedRoster } from "./workspace-roster.fixtures.js";
 
 const CREATORS = new Set(["FOUNDER", "PRINCIPAL", "DEPT_HEAD"]);
