@@ -6,9 +6,10 @@ import { ConfigModule } from "./config/config.module.js";
 import { AuthModule } from "./modules/auth/auth.module.js";
 import { HealthModule } from "./modules/health/health.module.js";
 import { InstitutionsModule } from "./modules/institutions/institutions.module.js";
+import { RbacModule } from "./modules/rbac/rbac.module.js";
 
 @Module({
-  imports: [ConfigModule, HealthModule, AuthModule, InstitutionsModule],
+  imports: [ConfigModule, HealthModule, AuthModule, InstitutionsModule, RbacModule],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     { provide: APP_GUARD, useClass: TenantScopeGuard },
