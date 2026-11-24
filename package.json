@@ -10,7 +10,8 @@
   "scripts": {
     "build": "turbo run build --filter=./apps/* --filter=./packages/*",
     "dev": "turbo run dev --filter=./apps/* --filter=./packages/*",
-    "lint": "turbo run lint --filter=./apps/* --filter=./packages/*",
+    "lint": "eslint . --max-warnings 0",
+    "prepare": "husky",
     "typecheck": "tsc -p tsconfig.json --noEmit --pretty false && turbo run typecheck --filter=./apps/* --filter=./packages/*",
     "test": "vitest run && turbo run test --filter=./apps/* --filter=./packages/*",
     "check:lines": "node scripts/check-file-lines.mjs"
@@ -27,5 +28,9 @@
     "typescript": "5.7.3",
     "typescript-eslint": "^8.74.0",
     "vitest": "^5.1.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mts,js,mjs,cjs,css,json,md,yml,yaml}": "prettier --write",
+    "*.{ts,tsx,mts,js,mjs,cjs}": "eslint --fix --max-warnings 0"
   }
 }
