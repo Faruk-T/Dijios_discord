@@ -99,6 +99,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       roster: snapshot.roster,
       activeChannelId: first,
       profileUserId: null,
+      filter: "all",
     });
   },
   setCreateOpen: (createOpen) => set({ createOpen }),

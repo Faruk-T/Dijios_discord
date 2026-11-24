@@ -34,7 +34,11 @@ export const useMessagingStore = create<MessagingState>((set, get) => ({
   searchOpen: false,
   hits: [],
   load: async (channelId, slug) => {
-    set({ messages: await get().client.load(channelId, slug), activeThreadRootId: null });
+    set({
+      messages: await get().client.load(channelId, slug),
+      activeThreadRootId: null,
+      typingName: null,
+    });
   },
   send: async (channelId, authorName, branch, content, parentId) => {
     await get().client.send(channelId, authorName, branch, content, parentId);
