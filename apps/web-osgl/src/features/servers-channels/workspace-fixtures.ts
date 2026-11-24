@@ -155,7 +155,19 @@ export function simulatedTree(role: AcademicSystemRole): WorkspaceTreeResponse {
         "01JFEN000000000000000000D1" as WorkspaceTreeResponse["categories"][number]["publicId"],
       name: category.name,
       position,
-      channels: category.channels.filter((item) => role === "COUNSELOR" || !item.isPdrConfidential),
+      channels: category.channels
+        .filter((item) => role === "COUNSELOR" || !item.isPdrConfidential)
+        .map((item) => ({
+          ...item,
+          permissions: {
+            ...item.permissions,
+            canSendMessages:
+              item.type !== "ANNOUNCEMENT" ||
+              role === "FOUNDER" ||
+              role === "PRINCIPAL" ||
+              role === "DEPT_HEAD",
+          },
+        })),
     })),
   };
 }

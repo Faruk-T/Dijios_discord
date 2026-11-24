@@ -1,4 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
+import { ToastProvider } from "truncgil-uxigl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { ClientSession } from "../auth/auth-client.port.js";
@@ -46,7 +47,11 @@ describe("communication hub", () => {
       status: "authenticated",
       session: session("TEACHER", "Fizik", "Can Fizik"),
     });
-    render(<CommunicationHubWindow />);
+    render(
+      <ToastProvider>
+        <CommunicationHubWindow />
+      </ToastProvider>,
+    );
     expect((await screen.findAllByText("Zeynep Başaran")).length).toBeGreaterThan(0);
     expect(screen.queryByText(/pdr-vaka-odasi/)).toBeNull();
   });
@@ -56,7 +61,11 @@ describe("communication hub", () => {
       status: "authenticated",
       session: session("COUNSELOR", "PDR", "Elif Rehber"),
     });
-    render(<CommunicationHubWindow />);
+    render(
+      <ToastProvider>
+        <CommunicationHubWindow />
+      </ToastProvider>,
+    );
     expect((await screen.findAllByText(/pdr-vaka-odasi/)).length).toBeGreaterThan(0);
     const profile = screen.getAllByRole("button", { name: /Zeynep Başaran/ })[0];
     if (profile === undefined) {

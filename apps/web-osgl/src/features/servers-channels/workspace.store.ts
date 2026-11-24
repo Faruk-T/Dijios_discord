@@ -6,9 +6,10 @@ import type {
 } from "@dijios-connect/contracts";
 import type { ClientSession } from "../auth/auth-client.port.js";
 import { createWorkspaceClient } from "./http-workspace.client.js";
+import { createdChannel } from "./workspace-channel.fixtures.js";
 import type { CreateChannelInput, WorkspaceClientPort } from "./workspace-client.port.js";
 
-export type ChannelFilter = "all" | "branch" | "voice" | "announcements";
+export type ChannelFilter = "all" | "branch" | "voice" | "announcements" | "dm";
 
 export interface WorkspaceState {
   readonly client: WorkspaceClientPort;
@@ -24,6 +25,7 @@ export interface WorkspaceState {
   readonly createOpen: boolean;
   load: (session: ClientSession) => Promise<void>;
   setCreateOpen: (open: boolean) => void;
+  openDirect: (teacher: TeacherRosterEntry) => void;
   createChannel: (session: ClientSession, input: CreateChannelInput) => Promise<void>;
   selectChannel: (channelId: string) => void;
   setFilter: (filter: ChannelFilter) => void;
@@ -35,6 +37,37 @@ export interface WorkspaceState {
 }
 
 let stopPresence: (() => void) | null = null;
+
+function openDirectChannel(
+  tree: WorkspaceTreeResponse | null,
+  teacher: TeacherRosterEntry,
+): Partial<WorkspaceState> {
+  if (tree === null) {
+    return {};
+  }
+  const existing = tree.categories
+    .flatMap((category) => category.channels)
+    .find((channel) => channel.type === "DM" && channel.name === teacher.fullName);
+  if (existing !== undefined) {
+    return { activeChannelId: existing.id, filter: "dm", profileUserId: null };
+  }
+  const category = tree.categories[0];
+  if (category === undefined) {
+    return {};
+  }
+  const channel = createdChannel(category.id, teacher.fullName, "DM", teacher.branchName);
+  return {
+    profileUserId: null,
+    filter: "dm",
+    activeChannelId: channel.id,
+    tree: {
+      ...tree,
+      categories: tree.categories.map((item) =>
+        item.id === category.id ? { ...item, channels: [...item.channels, channel] } : item,
+      ),
+    },
+  };
+}
 
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   client: createWorkspaceClient(),
@@ -69,6 +102,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     });
   },
   setCreateOpen: (createOpen) => set({ createOpen }),
+  openDirect: (teacher) => set(openDirectChannel(get().tree, teacher)),
   createChannel: async (session, input) => {
     const channel = await get().client.createChannel(session, input);
     const tree = get().tree;

@@ -19,6 +19,7 @@ function matches(
   branch: string | null,
   own: string,
 ): boolean {
+  if (filter === "dm") return type === "DM";
   if (filter === "voice") return type === "VOICE" || type === "VIDEO_STAGE";
   if (filter === "announcements") return type === "ANNOUNCEMENT";
   if (filter === "branch") return branch === own || branch === null;
@@ -47,6 +48,9 @@ export function ChannelTreeSidebar(): JSX.Element {
                 >
                   <GoogleIcon name={iconFor(channel.type, channel.isPdrConfidential)} size="sm" />
                   <span>{channel.name}</span>
+                  {channel.slug === "matematik-zumresi" ? (
+                    <span className="msg-mention">1</span>
+                  ) : null}
                 </button>
                 <VoiceChannelOccupants channel={channel} />
               </div>

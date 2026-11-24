@@ -9,6 +9,7 @@ import "./styles/login-portal.css";
 import "./styles/osgl-shell.css";
 import "./styles/osgl-windows.css";
 import "./styles/communication-hub.css";
+import "./styles/messaging-pane.css";
 
 const root = document.getElementById("root");
 if (root === null) {
