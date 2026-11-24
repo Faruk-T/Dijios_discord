@@ -20,7 +20,6 @@ const QUIET: MediaParticipant = {
 export class SimulatedMediaAdapter implements MediaTransportPort {
   private snapshot: MediaRoomSnapshot = { channelId: "", channelName: "", participants: [] };
   private readonly listeners = new Set<(snapshot: MediaRoomSnapshot) => void>();
-  private noise = true;
 
   connect(input: MediaConnectInput): Promise<MediaRoomSnapshot> {
     const self: MediaParticipant = {
@@ -78,7 +77,6 @@ export class SimulatedMediaAdapter implements MediaTransportPort {
   }
 
   setNoiseSuppression(enabled: boolean): void {
-    this.noise = enabled;
     teacherNoiseConstraints(enabled);
     shapeTeacherNoise(null, enabled);
   }
