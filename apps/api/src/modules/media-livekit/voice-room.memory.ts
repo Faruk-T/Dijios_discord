@@ -51,4 +51,11 @@ export class InMemoryVoiceRooms {
   identities(channelId: string): readonly string[] {
     return this.rooms.get(channelId)?.members.map((member) => member.userId) ?? [];
   }
+
+  activeNames(institutionId: string): readonly string[] {
+    const names = [...this.rooms.values()]
+      .filter((room) => room.institutionId === institutionId)
+      .flatMap((room) => room.members.map((member) => member.displayName));
+    return [...new Set(names)];
+  }
 }

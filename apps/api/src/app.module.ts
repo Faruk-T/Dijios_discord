@@ -10,6 +10,7 @@ import { InstitutionsModule } from "./modules/institutions/institutions.module.j
 import { RbacModule } from "./modules/rbac/rbac.module.js";
 import { FilesModule } from "./modules/files/files.module.js";
 import { MediaLivekitModule } from "./modules/media-livekit/media-livekit.module.js";
+import { MinutesModule } from "./modules/minutes/minutes.module.js";
 import { MessagingModule } from "./modules/messaging/messaging.module.js";
 import { RealtimeModule } from "./modules/realtime/realtime.module.js";
 import { WorkspacesModule } from "./modules/workspaces/workspaces.module.js";
@@ -27,6 +28,7 @@ import { WorkspacesModule } from "./modules/workspaces/workspaces.module.js";
     MessagingModule,
     FilesModule,
     MediaLivekitModule,
+    MinutesModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

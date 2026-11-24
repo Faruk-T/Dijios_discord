@@ -126,6 +126,10 @@ export class VoiceRoomsService {
     return this.book.identities(channelId);
   }
 
+  activeNames(institutionId: string): readonly string[] {
+    return this.book.activeNames(institutionId);
+  }
+
   private locate(auth: AuthContext, channelId: string): StoredChannel {
     const foreign = this.workspaces
       .list()
