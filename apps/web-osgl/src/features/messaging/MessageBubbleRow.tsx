@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 import { Avatar } from "truncgil-uxigl";
+import { SheetMessageEmbed } from "../academic-tools/SheetMessageEmbed.js";
 import type { ChatMessage } from "./messaging-client.port.js";
 import { useMessagingStore } from "./messaging.store.js";
 
@@ -27,6 +28,7 @@ export function MessageBubbleRow({
           {message.pinned ? <small>Sabit</small> : null}
         </header>
         <p>{highlight(message.content)}</p>
+        {message.content.startsWith("📊") ? <SheetMessageEmbed title={message.content} /> : null}
         {message.attachment !== null ? <div className="msg-file">{message.attachment}</div> : null}
         <div className="msg-reactions">
           {message.reactions.map((item) => (

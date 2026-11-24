@@ -1,5 +1,6 @@
 import { DepartmentFileManWindow } from "../features/academic-tools/DepartmentFileManWindow.js";
 import { MeetingMinutesWindow } from "../features/academic-tools/MeetingMinutesWindow.js";
+import { SheetGlAnalysisWindow } from "../features/academic-tools/SheetGlAnalysisWindow.js";
 import { CommunicationHubWindow } from "../features/servers-channels/CommunicationHubWindow.js";
 import { MediaStudioWindow } from "../features/settings-studio/MediaStudioWindow.js";
 import { VoiceStageWindow } from "../features/voice-video/VoiceStageWindow.js";
@@ -46,6 +47,16 @@ const SHELL_WINDOWS: readonly WindowAppDescriptor[] = [
     minSize: { width: 360, height: 240 },
     fullBleed: true,
     render: DepartmentFileManWindow,
+  },
+  {
+    appId: "sheetgl-analysis",
+    title: "SheetGL Sınav & Not Analizi",
+    category: "Akademik",
+    icon: "table_chart",
+    defaultSize: { width: 920, height: 580 },
+    minSize: { width: 360, height: 240 },
+    fullBleed: true,
+    render: SheetGlAnalysisWindow,
   },
   {
     appId: "theme-performance-studio",
