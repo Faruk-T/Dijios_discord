@@ -5,6 +5,7 @@ import type { ClientSession } from "../auth/auth-client.port.js";
 import { useAuthStore } from "../auth/auth.store.js";
 import { ChannelPollCard } from "./ChannelPollCard.js";
 import { CampusBroadcastBanner } from "./CampusBroadcastBanner.js";
+import { CampusBroadcastTrigger } from "./CampusBroadcastTrigger.js";
 import { useCampusAlertStore } from "./campus-alert.store.js";
 import { Student360QuickWindow } from "./Student360QuickWindow.js";
 
@@ -58,12 +59,22 @@ describe("academic bridge surfaces", () => {
   it("shows a campus alert only after leadership publishes it", async () => {
     const user = userEvent.setup();
     useAuthStore.setState({ session: session("TEACHER", "Can Fizik"), status: "authenticated" });
-    const teacher = render(<CampusBroadcastBanner />);
-    expect(screen.queryByRole("button", { name: "İdare Anonsu" })).toBeNull();
+    const teacher = render(
+      <>
+        <CampusBroadcastTrigger />
+        <CampusBroadcastBanner />
+      </>,
+    );
+    expect(screen.queryByRole("button", { name: "📢 Anons" })).toBeNull();
     teacher.unmount();
     useAuthStore.setState({ session: session("FOUNDER", "Ayşe Kurucu"), status: "authenticated" });
-    render(<CampusBroadcastBanner />);
-    await user.click(screen.getByRole("button", { name: "İdare Anonsu" }));
+    render(
+      <>
+        <CampusBroadcastTrigger />
+        <CampusBroadcastBanner />
+      </>,
+    );
+    await user.click(screen.getByRole("button", { name: "📢 Anons" }));
     expect(screen.getByRole("status").textContent ?? "").toContain(
       "Saat 15:30'da Genel Kurul Sahnesinde zümre değerlendirmesi yapılacaktır",
     );

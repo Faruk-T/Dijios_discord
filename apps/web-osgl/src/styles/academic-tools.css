@@ -77,8 +77,7 @@
   background: #457b9d;
 }
 
-.campus-alert,
-.campus-alert-slot {
+.campus-alert {
   position: relative;
   z-index: 1800;
   margin: 8px 16px 0;

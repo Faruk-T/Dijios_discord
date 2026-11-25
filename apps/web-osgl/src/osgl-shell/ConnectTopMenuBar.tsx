@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Avatar, GoogleIcon, Switch } from "truncgil-uxigl";
+import { CampusBroadcastTrigger } from "../features/academic-tools/CampusBroadcastTrigger.js";
 import { useAuthStore } from "../features/auth/auth.store.js";
 import { useWindowManager } from "../windows/window-manager.store.js";
 import { ActiveVoiceMenuPill } from "./ActiveVoiceMenuPill.js";
@@ -73,6 +74,7 @@ export function ConnectTopMenuBar(): React.JSX.Element {
         />
       </div>
       <div className="osgl-menu-right">
+        <CampusBroadcastTrigger />
         <ActiveVoiceMenuPill />
         <LessonBellBadge />
         <button

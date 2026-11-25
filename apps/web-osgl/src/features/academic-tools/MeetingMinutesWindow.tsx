@@ -1,12 +1,18 @@
 import type { JSX } from "react";
 import { useState } from "react";
 import { Badge, Card } from "truncgil-uxigl";
+import { useWorkspaceStore } from "../servers-channels/workspace.store.js";
+import { useVoiceSessionStore } from "../voice-video/voice-session.store.js";
 import { DecisionChecklist } from "./DecisionChecklist.js";
 import { publishMinutes, renderLocalMinutes, type LocalDecision } from "./minutes-markdown.js";
+import { syncMinutes } from "./minutes-sync.js";
 
-const ATTENDEES = ["Zeynep Başaran", "Can Fizik", "Ayşe Kurucu"] as const;
+const SEEDED = ["Zeynep Başaran", "Can Fizik", "Ayşe Kurucu"] as const;
 
 export function MeetingMinutesWindow(): JSX.Element {
+  const channelId = useWorkspaceStore((state) => state.activeChannelId) ?? "";
+  const participants = useVoiceSessionStore((state) => state.participants);
+  const attendees = participants.length > 0 ? participants.map((item) => item.name) : SEEDED;
   const [notes, setNotes] = useState("11. sınıf türev taraması ve ortak sınav takvimi görüşüldü.");
   const [decisions, setDecisions] = useState<readonly LocalDecision[]>([
     {
@@ -17,7 +23,7 @@ export function MeetingMinutesWindow(): JSX.Element {
     },
   ]);
   const [official, setOfficial] = useState("");
-  const markdown = renderLocalMinutes({ notes, attendees: ATTENDEES, decisions });
+  const markdown = renderLocalMinutes({ notes, attendees, decisions });
   return (
     <div className="minutes-window">
       <Card padding="md">
@@ -25,7 +31,7 @@ export function MeetingMinutesWindow(): JSX.Element {
           MEB tutanağı
         </Badge>
         <h2>Matematik Zümre Tutanağı</h2>
-        <p>Katılımcılar: {ATTENDEES.join(", ")}</p>
+        <p>Katılımcılar: {attendees.join(", ")}</p>
         <label>
           Gündem notu
           <textarea
@@ -53,6 +59,12 @@ export function MeetingMinutesWindow(): JSX.Element {
           onClick={() => {
             setOfficial(markdown);
             publishMinutes(markdown);
+            void syncMinutes({
+              channelId,
+              title: "Matematik Zümre Tutanağı",
+              markdownBody: notes,
+              decisions,
+            });
           }}
         >
           📄 Resmi Tutanak İndir / Kopyala
