@@ -31,6 +31,10 @@ describe("health and problem responses", () => {
 
     expect(health.statusCode).toBe(200);
     expect(health.json()).toEqual({ status: "ok" });
+    expect(health.headers["x-content-type-options"]).toBe("nosniff");
+    expect(health.headers["x-frame-options"]).toBe("SAMEORIGIN");
+    expect(health.headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+    expect(health.headers["x-robots-tag"]).toBe("noindex, nofollow, noarchive");
     expect(version.statusCode).toBe(200);
     expect(version.json()).toMatchObject({
       name: "@dijios-connect/api",

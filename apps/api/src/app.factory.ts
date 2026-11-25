@@ -19,6 +19,15 @@ export async function createApp(): Promise<NestFastifyApplication> {
   );
   app.enableCors({ origin: env.config.CORS_ORIGIN, credentials: true });
   await app.register(cookie, { secret: env.config.JWT_REFRESH_SECRET });
+  app
+    .getHttpAdapter()
+    .getInstance()
+    .addHook("onSend", async (_request, reply) => {
+      reply.header("x-content-type-options", "nosniff");
+      reply.header("x-frame-options", "SAMEORIGIN");
+      reply.header("referrer-policy", "strict-origin-when-cross-origin");
+      reply.header("x-robots-tag", "noindex, nofollow, noarchive");
+    });
   await app.init();
   await app.getHttpAdapter().getInstance().ready();
   return app;
