@@ -1,0 +1,15 @@
+---
+import { topicByPath } from "../content/topics.ts";
+import PortalLayout from "../layouts/PortalLayout.astro";
+import TopicArticle from "./TopicArticle.astro";
+
+interface Props {
+  path: string;
+}
+
+const topic = topicByPath(Astro.props.path);
+---
+
+<PortalLayout title={topic.title} description={topic.description} path={topic.path}>
+  <TopicArticle topic={topic} />
+</PortalLayout>

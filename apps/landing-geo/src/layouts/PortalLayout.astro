@@ -1,0 +1,47 @@
+---
+import JsonLdGraph from "../components/seo/JsonLdGraph.astro";
+import { TOPIC_PAGES } from "../content/topics.ts";
+import "../styles/portal.css";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+}
+
+const { title, description, path } = Astro.props;
+const canonical = path === "/" ? "https://connect.dijios.com/" : `https://connect.dijios.com${path}`;
+---
+
+<!doctype html>
+<html lang="tr-TR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow" />
+    <JsonLdGraph />
+  </head>
+  <body>
+    <header class="portal-header">
+      <a href="/">dijiOS Connect</a>
+      <nav class="portal-nav" aria-label="Tanıtım">
+        {
+          TOPIC_PAGES.map((topic) => (
+            <a href={topic.path}>{topic.h1}</a>
+          ))
+        }
+      </nav>
+    </header>
+    <main class="portal-main">
+      <slot />
+    </main>
+    <footer class="portal-footer">
+      <a href="/llms.txt">llms.txt</a>
+      <a href="/llms-full.txt">llms-full.txt</a>
+      <a href="/sitemap.xml">sitemap.xml</a>
+    </footer>
+  </body>
+</html>

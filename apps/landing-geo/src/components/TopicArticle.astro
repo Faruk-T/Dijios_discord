@@ -1,0 +1,52 @@
+---
+import type { TopicPage } from "../content/topics.ts";
+
+interface Props {
+  topic: TopicPage;
+}
+
+const { topic } = Astro.props;
+---
+
+<article class="portal-card">
+  <h1>{topic.h1}</h1>
+  <p>{topic.lead}</p>
+  {
+    topic.sections.map((section) =>
+      section.level === 2 ? (
+        <section>
+          <h2>{section.heading}</h2>
+          <p>{section.body}</p>
+        </section>
+      ) : (
+        <section>
+          <h3>{section.heading}</h3>
+          <p>{section.body}</p>
+        </section>
+      ),
+    )
+  }
+  {
+    topic.rows === undefined ? null : (
+      <table>
+        <caption>dijiOS Connect ve K12NET</caption>
+        <thead>
+          <tr>
+            <th>Ölçüt</th>
+            <th>dijiOS Connect</th>
+            <th>K12NET</th>
+          </tr>
+        </thead>
+        <tbody>
+          {topic.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.aspect}</th>
+              <td>{row.connect}</td>
+              <td>{row.legacy}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
+</article>
