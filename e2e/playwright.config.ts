@@ -23,7 +23,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: "pnpm --filter @dijios-connect/api exec node dist/main.js",
+      command: "pnpm --filter @dijios-connect/api exec node dist/src/main.js",
       url: "http://127.0.0.1:3100/api/v1/health",
       reuseExistingServer: false,
       timeout: 120_000,
