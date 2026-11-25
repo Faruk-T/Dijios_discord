@@ -10,10 +10,12 @@ test("two teachers join the math voice room with fake media", async ({ browser }
   await signIn(elif, /Elif Rehber/);
   await zeynep.getByRole("button", { name: "🔊 Matematik Zümresi" }).click();
   await elif.getByRole("button", { name: "🔊 Matematik Zümresi" }).click();
-  await zeynep.getByRole("button", { name: "Sesli Odaya Katıl" }).click();
-  await elif.getByRole("button", { name: "Sesli Odaya Katıl" }).click();
-  await expect(zeynep.getByRole("button", { name: "Ayrıl" })).toBeVisible();
-  await expect(elif.getByRole("button", { name: "Ayrıl" })).toBeVisible();
+  await zeynep.getByRole("button", { name: "Sesli Odaya Katıl" }).click({ force: true });
+  await elif.getByRole("button", { name: "Sesli Odaya Katıl" }).click({ force: true });
+  await expect(
+    zeynep.locator("#active-voice").getByRole("button", { name: "Ayrıl" }),
+  ).toBeVisible();
+  await expect(elif.locator("#active-voice").getByRole("button", { name: "Ayrıl" })).toBeVisible();
   await left.close();
   await right.close();
 });

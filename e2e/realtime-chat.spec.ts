@@ -12,10 +12,14 @@ test("two teacher sessions each deliver a math-channel message", async ({ browse
   await openMathChannel(can);
   await zeynep.getByRole("textbox", { name: "Mesaj" }).fill("Cuma taraması zümre notu");
   await zeynep.getByRole("button", { name: "Gönder" }).click();
-  await expect(zeynep.getByText("Cuma taraması zümre notu")).toBeVisible();
+  await expect(
+    zeynep.getByRole("paragraph").filter({ hasText: "Cuma taraması zümre notu" }),
+  ).toBeVisible();
   await can.getByRole("textbox", { name: "Mesaj" }).fill("Fizik çapraz okuma notu");
   await can.getByRole("button", { name: "Gönder" }).click();
-  await expect(can.getByText("Fizik çapraz okuma notu")).toBeVisible();
+  await expect(
+    can.getByRole("paragraph").filter({ hasText: "Fizik çapraz okuma notu" }),
+  ).toBeVisible();
   await left.close();
   await right.close();
 });
