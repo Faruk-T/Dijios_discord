@@ -26,6 +26,7 @@ export default tseslint.config(
       "**/.turbo/**",
       "**/coverage/**",
       "**/.astro/**",
+      "**/*.astro",
       "**/target/**",
       "**/generated/**",
       "pnpm-lock.yaml",
