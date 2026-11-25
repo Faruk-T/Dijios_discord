@@ -44,29 +44,33 @@ export function RichMessageComposer({
           }
         }}
       />
-      <label className="msg-file-btn">
-        📎 Dosya Ekle
-        <input
-          type="file"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            if (file === undefined) return;
-            const safe = assertSafeFile(file.name, file.size);
-            setError(safe.ok ? "" : safe.reason);
-            if (safe.ok) setValue((current) => `${current} 📄 ${file.name}`.trim());
-          }}
+      <div className="msg-composer-toolbar">
+        <label className="msg-file-btn">
+          📎 Dosya Ekle
+          <input
+            type="file"
+            onChange={(event) => {
+              const file = event.target.files?.[0];
+              if (file === undefined) return;
+              const safe = assertSafeFile(file.name, file.size);
+              setError(safe.ok ? "" : safe.reason);
+              if (safe.ok) setValue((current) => `${current} 📄 ${file.name}`.trim());
+            }}
+          />
+        </label>
+        <button type="button" onClick={() => setValue((current) => `${current} @Zeynep`.trim())}>
+          @
+        </button>
+        <ComposerShortcuts
+          channelId={channelId}
+          authorName={authorName}
+          branch={branch}
+          parentId={parentId}
         />
-      </label>
-      <button type="button" onClick={() => setValue((current) => `${current} @Zeynep`.trim())}>
-        @
-      </button>
-      <ComposerShortcuts
-        channelId={channelId}
-        authorName={authorName}
-        branch={branch}
-        parentId={parentId}
-      />
-      <button type="submit">Gönder</button>
+        <button className="msg-send" type="submit">
+          Gönder
+        </button>
+      </div>
       {error.length > 0 ? <p>{error}</p> : null}
     </form>
   );
