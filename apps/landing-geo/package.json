@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc -p tsconfig.json --noEmit --pretty false",
-    "test": "node --test"
+    "test": "vitest run"
   },
   "devDependencies": {
     "astro": "^5.18.2",

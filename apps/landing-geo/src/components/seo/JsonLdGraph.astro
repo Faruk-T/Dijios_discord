@@ -1,0 +1,7 @@
+---
+import { buildSchemaGraph } from "../../seo/schema-graph.ts";
+
+const graph = buildSchemaGraph();
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />
