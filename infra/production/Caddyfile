@@ -1,0 +1,17 @@
+connect.dijios.com {
+	encode gzip
+	header /app/* X-Robots-Tag "noindex, nofollow, noarchive"
+	header /api/* X-Robots-Tag "noindex, nofollow, noarchive"
+
+	handle /api/* {
+		reverse_proxy api:3000
+	}
+
+	handle /app/* {
+		reverse_proxy web:80
+	}
+
+	handle {
+		reverse_proxy landing:80
+	}
+}
