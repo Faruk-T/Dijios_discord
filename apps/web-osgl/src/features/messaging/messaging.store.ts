@@ -5,6 +5,7 @@ import type { MessagingClientPort } from "./messaging-client.port.js";
 
 interface MessagingState {
   readonly client: MessagingClientPort;
+  readonly activeChannelId: string | null;
   readonly messages: readonly ChatMessage[];
   readonly activeThreadRootId: string | null;
   readonly typingName: string | null;
@@ -24,16 +25,20 @@ interface MessagingState {
   setSearchOpen: (open: boolean) => void;
   search: (query: string) => Promise<void>;
   setTyping: (name: string | null) => void;
+  applyLive: (message: ChatMessage) => void;
+  applyRemoved: (channelId: string, messageId: string) => void;
 }
 
 export const useMessagingStore = create<MessagingState>((set, get) => ({
   client: createMessagingClient(),
+  activeChannelId: null,
   messages: [],
   activeThreadRootId: null,
   typingName: null,
   searchOpen: false,
   hits: [],
   load: async (channelId, slug) => {
+    set({ activeChannelId: channelId });
     set({
       messages: await get().client.load(channelId, slug),
       activeThreadRootId: null,
@@ -54,4 +59,22 @@ export const useMessagingStore = create<MessagingState>((set, get) => ({
   setSearchOpen: (searchOpen) => set({ searchOpen }),
   search: async (query) => set({ hits: await get().client.search(query), searchOpen: true }),
   setTyping: (typingName) => set({ typingName }),
+  applyLive: (message) => {
+    if (get().activeChannelId !== message.channelId) {
+      return;
+    }
+    const messages = get().messages;
+    const exists = messages.some((item) => item.id === message.id);
+    set({
+      messages: exists
+        ? messages.map((item) => (item.id === message.id ? message : item))
+        : [message, ...messages],
+    });
+  },
+  applyRemoved: (channelId, messageId) => {
+    if (get().activeChannelId !== channelId) {
+      return;
+    }
+    set({ messages: get().messages.filter((item) => item.id !== messageId) });
+  },
 }));

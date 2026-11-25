@@ -1,15 +1,25 @@
 import { expect, test } from "@playwright/test";
 import { signIn } from "./teacher-session.js";
 
-test("two teachers open their own institution channels", async ({ browser }) => {
-  const founder = await browser.newContext();
-  const teacher = await browser.newContext();
-  const ayse = await founder.newPage();
-  const can = await teacher.newPage();
-  await signIn(ayse, /Ayşe Kurucu/);
-  await signIn(can, /Can Fizik/);
-  await expect(ayse.getByRole("button", { name: /matematik-zumresi/ })).toBeVisible();
-  await expect(can.getByRole("button", { name: /fizik-zumresi/ })).toBeVisible();
-  await founder.close();
-  await teacher.close();
+test("hides the counseling room and lets the counselor open a poll", async ({ browser }) => {
+  const math = await browser.newContext();
+  const counseling = await browser.newContext();
+  const zeynep = await math.newPage();
+  const elif = await counseling.newPage();
+  await signIn(zeynep, /Zeynep Başaran/);
+  await signIn(elif, /Elif Rehber/);
+  await expect(zeynep.getByRole("button", { name: /matematik-zumresi/ })).toBeVisible();
+  await expect(zeynep.getByRole("button", { name: /pdr-vaka-odasi/ })).toHaveCount(0);
+  await expect(elif.getByRole("button", { name: /pdr-vaka-odasi/ })).toBeVisible();
+  await elif
+    .getByRole("button", { name: /matematik-zumresi/ })
+    .first()
+    .click();
+  await elif.getByRole("button", { name: "🗳️ Hızlı Oylama" }).click();
+  const friday = elif.getByRole("button", { name: /Cuma %/ });
+  await expect(friday).toBeVisible();
+  await friday.click();
+  await expect(elif.getByRole("button", { name: /Cuma %56/ })).toBeVisible();
+  await math.close();
+  await counseling.close();
 });

@@ -8,6 +8,7 @@ import { RichMessageComposer } from "./RichMessageComposer.js";
 import { ThreadSideDrawer } from "./ThreadSideDrawer.js";
 import { TypingIndicatorBar } from "./TypingIndicatorBar.js";
 import { useMessagingStore } from "./messaging.store.js";
+import { useChatRealtime } from "./useChatRealtime.js";
 import { useSmartNotifications } from "./useSmartNotifications.js";
 
 export function ChannelChatPane({
@@ -22,6 +23,7 @@ export function ChannelChatPane({
   useEffect(() => {
     void load(channel.id, channel.slug);
   }, [channel.id, channel.slug, load]);
+  useChatRealtime();
   useSmartNotifications(messages);
   return (
     <div className="msg-pane">
