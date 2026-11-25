@@ -14,11 +14,13 @@
     "prepare": "husky",
     "typecheck": "tsc -p tsconfig.json --noEmit --pretty false && turbo run typecheck --filter=./apps/* --filter=./packages/*",
     "test": "vitest run && turbo run test --filter=./apps/* --filter=./packages/*",
+    "test:e2e": "playwright test -c e2e/playwright.config.ts",
     "check:lines": "node scripts/check-file-lines.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
+    "@playwright/test": "^1.65.1",
     "@types/node": "^22.20.5",
     "eslint": "^9.39.5",
     "husky": "^9.1.7",
