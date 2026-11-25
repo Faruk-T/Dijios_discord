@@ -1,0 +1,9 @@
+{
+  "name": "dijiOS Connect",
+  "short_name": "Connect",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#002147",
+  "theme_color": "#002147",
+  "lang": "tr-TR"
+}
