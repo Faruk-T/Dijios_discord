@@ -1,0 +1,12 @@
+{
+  "name": "@dijios-connect/desktop-tauri",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/verify-shell.mjs",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "node --check scripts/verify-shell.mjs",
+    "test": "node --test scripts/verify-shell.test.mjs"
+  }
+}
