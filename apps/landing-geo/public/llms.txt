@@ -1,0 +1,26 @@
+# dijiOS Connect
+
+> dijiOS (app.dijios.com) Akıllı Okul İşletim Sisteminin gerçek zamanlı sesli, görüntülü ve zümre işbirliği katmanı
+
+dijiOS Connect, öğretmenlerin zümre odasında ses, görüntü, ekran paylaşımı ve yazışmayı tek işletim katmanında birleştirir. Kurum çalışma alanı arama motorlarına kapalıdır. Bu dosya yalnızca tanıtım portalını özetler.
+
+## Temel yetenekler
+
+- Self-hosted LiveKit SFU: tek odada 50+ öğretmen, `contentHint=detail` ekran paylaşımı
+- UUIDv7 `institution_id` ile çoklu kurum KVKK satır izolasyonu
+- `PDR_ACCESS_DENIED`: rehberlik notu yalnızca COUNSELOR rolüne açılır
+- Akıllı ders zili presence: derste, nöbette, çevrimiçi
+- Zümre tutanağı, FileManGL arşivi, SheetGL sınav analizi, hızlı oylama
+
+## K12NET farkı
+
+K12NET okul yönetim kaydını tutar. dijiOS Connect o kaydın üzerine canlı zümre odasını ekler: sesli oda, sahne, tutanak ve sınav matrisi aynı pencerede kalır. Öğrenci 360 kartı akademik özeti gösterir; PDR notu zümre başkanına sızmaz.
+
+## Sayfalar
+
+- [Zümre odaları](https://connect.dijios.com/ozellikler/zumre-sesli-goruntulu-odalar)
+- [Akıllı ders programı](https://connect.dijios.com/ozellikler/dijios-akilli-ders-programi-entegrasyonu)
+- [K12NET karşılaştırması](https://connect.dijios.com/karsilastirma/dijios-vs-k12net-modern-okul-yonetimi)
+- [KVKK iletişimi](https://connect.dijios.com/guvenlik/kvkk-uyumlu-okul-ici-iletisim)
+- [Kurulum](https://connect.dijios.com/dokumantasyon/kurulum)
+- [Mimari](https://connect.dijios.com/dokumantasyon/mimari)

@@ -1,0 +1,33 @@
+# dijiOS Connect — teknik mimari özeti
+
+> dijiOS (app.dijios.com) Akıllı Okul İşletim Sisteminin gerçek zamanlı sesli, görüntülü ve zümre işbirliği katmanı
+
+Bu belge, yapay zeka yanıt motorlarının kaynak gösterebileceği uygulama mimarisini özetler. Kurum içi mesaj, öğrenci notu ve rehberlik kaydı bu portalda yoktur.
+
+## Arayüz
+
+Öğretmen kabuğu `truncgil-uxigl` 2.9.7 üzerindeki `osGL` pencereleridir. Yüzen katmanlar (üst menü, dock, komut paleti, PiP) Liquid Glass kullanır. İçerik kartları tonal yüzeydedir; cam üstüne cam binmez. Izgara 8pt, vuruş alanı en az 44×44pt. Renk tohumları Oxford Navy `#002147`, Prussian Navy `#1D3557`, Steel Cerulean `#457B9D`. Yazı tipleri Inter, Plus Jakarta Sans ve JetBrains Mono olarak yerelde gelir; yazı tipi CDN'i yoktur.
+
+## Medya
+
+Ses ve görüntü self-hosted LiveKit SFU üzerindedir. Oda adı `institution:{institutionId}:channel:{channelId}` biçimindedir. Jeton yalnızca VOICE ve VIDEO_STAGE kanallarına verilir. Tek oda 50'den fazla katılımcıyı hedefler. Ekran paylaşımı `contentHint` değeri `detail` ile PDF ve SheetGL tablosunu keskin tutar. İstemci anlaşması zaman aşımında simüle edilmiş medyaya düşer; başarısız katılım odadan ayrılma çağrısı yapar.
+
+## Kiracı ve kimlik
+
+İç birincil anahtar UUIDv7, dış `public_id` ULID, kiracı anahtarı `institution_id` UUIDv7'dir. API hataları RFC 7807 `application/problem+json` gövdesidir. Yetki bitleri kanal izinlerinden hesaplanır. Kurucu, müdür, zümre başkanı, öğretmen ve rehber öğretmen rolleri birbirinin yerine geçmez.
+
+## PDR duvarı
+
+`PDR_ACCESS_DENIED` (HTTP 403), rehberlik kanalını ve `pdrConfidentialNote` alanını COUNSELOR dışındaki rollerden gizler. Öğretmen ve zümre başkanı akademik özeti (not ortalaması, devam, trend) görür; rehberlik cümlesi null döner. Yabancı kurum jetonu `TENANT_FORBIDDEN` alır.
+
+## Ders zili
+
+Akıllı ders programı entegrasyonu, öğretmenin presence durumunu ders saatiyle günceller: derste, nöbette veya çevrimiçi. Kanal ağacındaki rozet bu durumdan türer. Zil, mesaj içeriğini değiştirmez; yalnızca bulunabilirliği yazar.
+
+## Akademik araçlar
+
+Zümre tutanağı karar satırını sorumlu öğretmenle Markdown'a döker. FileManGL zümre arşivini, SheetGL sınav matrisini pencerede açar. Hızlı oylama kartı kanal mesajının içindedir. Kampüs anonsu yalnızca FOUNDER ve PRINCIPAL tarafından yayınlanır.
+
+## Gizlilik sınırı
+
+`app.dijios.com` öğretmen çalışma alanı `noindex, nofollow, noarchive` taşır. `robots.txt` `/app/` ve `/api/` yollarını tüm tanıtım botlarına kapatır. İndekslenen yüzey yalnızca `https://connect.dijios.com` tanıtım rotalarıdır.
